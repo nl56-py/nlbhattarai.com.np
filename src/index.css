@@ -2,75 +2,93 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 15% 15%;
+    /* Warm cream light theme */
+    --background: 40 30% 97%;
+    --foreground: 30 10% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 15%;
+    --card: 40 25% 95%;
+    --card-foreground: 30 10% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 15%;
+    --popover: 40 25% 95%;
+    --popover-foreground: 30 10% 15%;
 
-    --primary: 220 15% 20%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 30 60% 45%;
+    --primary-foreground: 40 30% 97%;
 
-    --secondary: 220 10% 96%;
-    --secondary-foreground: 220 15% 20%;
+    --secondary: 40 20% 92%;
+    --secondary-foreground: 30 10% 20%;
 
-    --muted: 220 10% 96%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 40 15% 90%;
+    --muted-foreground: 30 10% 40%;
 
-    --accent: 220 10% 94%;
-    --accent-foreground: 220 15% 20%;
+    --accent: 30 40% 88%;
+    --accent-foreground: 30 10% 20%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 10% 90%;
-    --input: 220 10% 90%;
-    --ring: 220 15% 20%;
+    --border: 30 20% 85%;
+    --input: 30 20% 85%;
+    --ring: 30 60% 45%;
 
-    --radius: 0.25rem;
+    --radius: 0.5rem;
 
-    /* Custom tokens */
-    --font-serif: 'Playfair Display', Georgia, serif;
-    --font-sans: 'Inter', system-ui, sans-serif;
+    /* Custom design tokens */
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Outfit', system-ui, sans-serif;
     
     --spacing-section: 6rem;
     --spacing-content: 2rem;
-    --max-content: 42rem;
-    --max-wide: 64rem;
+    --max-content: 48rem;
+    --max-wide: 72rem;
+
+    /* Gradients */
+    --gradient-warm: linear-gradient(135deg, hsl(30 60% 45%) 0%, hsl(40 50% 55%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(40 30% 97%) 0%, hsl(40 25% 94%) 100%);
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(30 20% 20% / 0.08);
+    --shadow-medium: 0 8px 30px -8px hsl(30 20% 20% / 0.12);
   }
 
   .dark {
-    --background: 220 15% 8%;
-    --foreground: 220 10% 92%;
+    /* Sophisticated dark theme - deep charcoal with warm accents */
+    --background: 220 20% 6%;
+    --foreground: 40 20% 92%;
 
-    --card: 220 15% 10%;
-    --card-foreground: 220 10% 92%;
+    --card: 220 18% 9%;
+    --card-foreground: 40 20% 92%;
 
-    --popover: 220 15% 10%;
-    --popover-foreground: 220 10% 92%;
+    --popover: 220 18% 9%;
+    --popover-foreground: 40 20% 92%;
 
-    --primary: 220 10% 92%;
-    --primary-foreground: 220 15% 10%;
+    --primary: 35 70% 60%;
+    --primary-foreground: 220 20% 6%;
 
-    --secondary: 220 15% 15%;
-    --secondary-foreground: 220 10% 92%;
+    --secondary: 220 15% 12%;
+    --secondary-foreground: 40 20% 88%;
 
-    --muted: 220 15% 15%;
-    --muted-foreground: 220 10% 60%;
+    --muted: 220 15% 14%;
+    --muted-foreground: 40 10% 55%;
 
-    --accent: 220 15% 18%;
-    --accent-foreground: 220 10% 92%;
+    --accent: 220 15% 16%;
+    --accent-foreground: 40 20% 92%;
 
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 220 10% 70%;
+    --border: 220 15% 15%;
+    --input: 220 15% 15%;
+    --ring: 35 70% 60%;
+
+    /* Dark mode gradients */
+    --gradient-warm: linear-gradient(135deg, hsl(35 70% 60%) 0%, hsl(45 60% 50%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(220 20% 6%) 0%, hsl(220 18% 8%) 100%);
+    
+    /* Dark mode shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
+    --shadow-medium: 0 8px 30px -8px hsl(0 0% 0% / 0.4);
   }
 }
 
@@ -86,22 +104,24 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-sans);
-    line-height: 1.7;
+    line-height: 1.75;
+    font-weight: 400;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
     font-weight: 500;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
   }
 
   h1 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
+    @apply text-4xl md:text-5xl lg:text-6xl;
+    font-weight: 600;
   }
 
   h2 {
-    @apply text-2xl md:text-3xl;
+    @apply text-2xl md:text-3xl lg:text-4xl;
   }
 
   h3 {
@@ -110,6 +130,10 @@
 
   p {
     @apply text-base md:text-lg;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.2);
   }
 }
 
@@ -125,11 +149,11 @@
   }
 
   .section {
-    @apply py-16 md:py-24;
+    @apply py-20 md:py-28 lg:py-32;
   }
 
   .section-sm {
-    @apply py-10 md:py-16;
+    @apply py-12 md:py-20;
   }
 
   .prose-custom {
@@ -141,23 +165,167 @@
   }
 
   .prose-custom ul {
-    @apply space-y-3 text-muted-foreground;
+    @apply space-y-4 text-muted-foreground;
   }
 
   .prose-custom li {
-    @apply pl-4 relative;
+    @apply pl-6 relative;
   }
 
   .prose-custom li::before {
-    content: '—';
-    @apply absolute left-0 text-muted-foreground/50;
+    content: '';
+    @apply absolute left-0 top-3 w-2 h-px bg-primary/50;
   }
 
   .link-subtle {
-    @apply text-foreground underline underline-offset-4 decoration-border hover:decoration-foreground transition-colors duration-200;
+    @apply text-foreground underline underline-offset-4 decoration-primary/30 hover:decoration-primary transition-all duration-300;
+  }
+
+  .link-primary {
+    @apply text-primary underline underline-offset-4 decoration-primary/30 hover:decoration-primary transition-all duration-300;
   }
 
   .divider {
-    @apply border-t border-border my-12 md:my-16;
+    @apply border-t border-border/50 my-16 md:my-24;
+  }
+
+  /* Animated underline for links */
+  .link-animated {
+    @apply relative inline-block text-foreground;
+  }
+
+  .link-animated::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-px bg-primary transform scale-x-0 origin-right transition-transform duration-300;
+  }
+
+  .link-animated:hover::after {
+    @apply scale-x-100 origin-left;
+  }
+
+  /* Card styles */
+  .card-elevated {
+    @apply bg-card rounded-lg p-6 md:p-8;
+    box-shadow: var(--shadow-soft);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .card-elevated:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    background: var(--gradient-warm);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Hero patterns */
+  .hero-pattern {
+    background-image: radial-gradient(circle at 1px 1px, hsl(var(--primary) / 0.03) 1px, transparent 0);
+    background-size: 40px 40px;
+  }
+
+  /* Subtle glow effect */
+  .glow-primary {
+    box-shadow: 0 0 60px -15px hsl(var(--primary) / 0.3);
   }
 }
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Staggered animation delays */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
