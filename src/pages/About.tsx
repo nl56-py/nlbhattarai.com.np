@@ -30,21 +30,33 @@ const About = () => {
             <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-12">
               {/* Profile Image */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
-                className="relative flex-shrink-0"
-              >
-                <div className="w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-2xl shadow-primary/10">
-                  <img
-                    src={profileImage}
-                    alt="N.L. Bhattarai - Digital Authority Specialist"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                {/* Decorative element */}
-                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-primary/10 rounded-2xl -z-10" />
-              </motion.div>
+  initial={{ opacity: 0, scale: 0.92 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.9, ease: [0.25, 0.4, 0.25, 1] }}
+  className="relative flex-shrink-0"
+>
+  <div
+    className="
+      w-72 h-72
+      sm:w-80 sm:h-80
+      md:w-[22rem] md:h-[22rem]
+      lg:w-[26rem] lg:h-[26rem]
+      rounded-3xl
+      overflow-hidden
+      border border-primary/20
+      shadow-2xl shadow-primary/10
+    "
+  >
+    <img
+      src={profileImage}
+      alt="N.L. Bhattarai - Digital Authority Specialist"
+      className="w-full h-full object-cover"
+    />
+  </div>
+
+  {/* Decorative element */}
+  <div className="absolute -bottom-6 -right-6 w-40 h-40 bg-primary/10 rounded-3xl -z-10" />
+</motion.div>
 
               {/* Hero Text */}
               <motion.div
