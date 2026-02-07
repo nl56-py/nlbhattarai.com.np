@@ -1,73 +1,68 @@
-# Welcome to your Lovable project
+# N.L. Bhattarai — Personal Website
 
-## Project info
+This repository contains my personal website, built to translate **real-world expertise, trust, and long-term establishment** into a calm, SEO-safe digital presence.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+The site is designed primarily for **high-trust sectors** such as healthcare, while remaining equally effective for **education, SMEs, and professional services**.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## About Me
 
-**Use Lovable**
+I work with people and organizations who already have **real-world credibility** but lack a digital presence that accurately reflects it.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Most often, this includes **doctors, clinics, and hospitals**—professionals with decades of experience whose reputation was built offline. However, the same trust-first approach also applies to **schools, colleges, SMEs, consultants, and service businesses** that rely on credibility rather than hype.
 
-Changes made via Lovable will be committed automatically to this repo.
+My work focuses on building **calm, structured, and SEO-safe digital systems** that compound over time. I do not chase trends, hacks, or short-term visibility. Instead, I design systems that:
 
-**Use your preferred IDE**
+- Preserve what already works  
+- Communicate expertise clearly  
+- Build trust before growth  
+- Remain stable through algorithm changes  
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+The goal is not traffic for its own sake—but **digital authority that lasts**.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## Philosophy
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+My approach is guided by a few core principles:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- Clarity over noise  
+- Systems over tactics  
+- Trust before growth  
+- Preservation before rebuilding  
+- Long-term thinking over quick wins  
 
-# Step 3: Install the necessary dependencies.
-npm i
+This philosophy is especially important in healthcare and education, where credibility is fragile and misinformation carries real consequences.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+---
 
-**Edit a file directly in GitHub**
+## What This Website Represents
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+This website is intentionally minimal and restrained. Every design and content decision exists to support:
 
-**Use GitHub Codespaces**
+- Clear communication
+- Trust-building
+- Long-term SEO safety
+- Professional credibility
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+There are no gimmicks, aggressive CTAs, or exaggerated claims—only documented work, clear positioning, and calm presentation.
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## Tech Stack
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Vite** + **React** + **TypeScript**
+- **Tailwind CSS**
+- **shadcn/ui**
+- **Framer Motion**
+- **React Router**
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Getting Started
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Clone the repository
+```bash
+git clone git@github.com:nl56-py/code-companion-pro.git
+cd code-companion-pro
