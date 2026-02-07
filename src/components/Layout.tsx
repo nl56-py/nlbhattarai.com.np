@@ -9,7 +9,7 @@ const navItems = [
   { path: "/", label: "Home" },
   { path: "/about", label: "About" },
   { path: "/case-studies", label: "Case Studies" },
-  { path: "/writing", label: "Writing" },
+  { path: "/blog", label: "Blog" },
   { path: "/contact", label: "Contact" },
 ];
 
@@ -37,13 +37,15 @@ const Layout = ({ children }: LayoutProps) => {
                 <Link
                   to={item.path}
                   className={`relative py-2 transition-colors duration-300 ${
-                    location.pathname === item.path
+                    location.pathname === item.path ||
+                    (item.path === "/blog" && location.pathname.startsWith("/blog"))
                       ? "text-primary"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {item.label}
-                  {location.pathname === item.path && (
+                  {(location.pathname === item.path ||
+                    (item.path === "/blog" && location.pathname.startsWith("/blog"))) && (
                     <motion.span
                       layoutId="activeNav"
                       className="absolute bottom-0 left-0 right-0 h-px bg-primary"

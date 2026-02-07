@@ -1,0 +1,309 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Plus, Pencil, Trash2, Eye, EyeOff, LogOut, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import BlogEditor from "@/components/admin/BlogEditor";
+
+interface Blog {
+  id: string;
+  title: string;
+  slug: string;
+  description: string | null;
+  content: string;
+  category: string;
+  cover_image_url: string | null;
+  published: boolean;
+  created_at: string;
+}
+
+const Admin = () => {
+  const { user, isAdmin, isLoading: authLoading, signOut } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/auth");
+    }
+  }, [user, authLoading, navigate]);
+
+  const { data: blogs, isLoading } = useQuery({
+    queryKey: ["admin-blogs"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("blogs")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      return data as Blog[];
+    },
+    enabled: !!user && isAdmin,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("blogs").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-blogs"] });
+      toast({ title: "Blog deleted successfully" });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error deleting blog",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const togglePublishMutation = useMutation({
+    mutationFn: async ({ id, published }: { id: string; published: boolean }) => {
+      const { error } = await supabase
+        .from("blogs")
+        .update({ published })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-blogs"] });
+      toast({ title: "Blog status updated" });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error updating blog",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/");
+  };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-4">
+        <div className="text-center">
+          <h1 className="font-serif text-3xl text-foreground mb-4">Access Denied</h1>
+          <p className="text-muted-foreground mb-6">
+            You don't have permission to access the admin panel.
+          </p>
+          <Button onClick={() => navigate("/")}>Go Home</Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b border-border/50 bg-card/50">
+        <div className="container-wide py-4 flex items-center justify-between">
+          <h1 className="font-serif text-2xl text-foreground">Admin Panel</h1>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground">{user?.email}</span>
+            <Button variant="outline" size="sm" onClick={handleLogout}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <main className="container-wide py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Actions */}
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-xl font-medium text-foreground">Blog Posts</h2>
+              <p className="text-muted-foreground text-sm">
+                Manage your blog content
+              </p>
+            </div>
+            <Button
+              onClick={() => {
+                setEditingBlog(null);
+                setIsEditorOpen(true);
+              }}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              New Post
+            </Button>
+          </div>
+
+          {/* Blog Table */}
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            </div>
+          ) : blogs && blogs.length > 0 ? (
+            <div className="border border-border rounded-lg overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Title</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {blogs.map((blog) => (
+                    <TableRow key={blog.id}>
+                      <TableCell className="font-medium">{blog.title}</TableCell>
+                      <TableCell>
+                        <span className="px-2 py-0.5 text-xs bg-accent rounded">
+                          {blog.category}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <span
+                          className={`px-2 py-0.5 text-xs rounded ${
+                            blog.published
+                              ? "bg-green-500/20 text-green-400"
+                              : "bg-yellow-500/20 text-yellow-400"
+                          }`}
+                        >
+                          {blog.published ? "Published" : "Draft"}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-sm">
+                        {new Date(blog.created_at).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() =>
+                              togglePublishMutation.mutate({
+                                id: blog.id,
+                                published: !blog.published,
+                              })
+                            }
+                            title={blog.published ? "Unpublish" : "Publish"}
+                          >
+                            {blog.published ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => {
+                              setEditingBlog(blog);
+                              setIsEditorOpen(true);
+                            }}
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <Trash2 className="w-4 h-4 text-destructive" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Blog Post</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete "{blog.title}"? This
+                                  action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => deleteMutation.mutate(blog.id)}
+                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ) : (
+            <div className="text-center py-12 border border-border rounded-lg">
+              <p className="text-muted-foreground mb-4">No blog posts yet</p>
+              <Button
+                onClick={() => {
+                  setEditingBlog(null);
+                  setIsEditorOpen(true);
+                }}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Create your first post
+              </Button>
+            </div>
+          )}
+        </motion.div>
+      </main>
+
+      {/* Blog Editor Dialog */}
+      <BlogEditor
+        blog={editingBlog}
+        isOpen={isEditorOpen}
+        onClose={() => {
+          setIsEditorOpen(false);
+          setEditingBlog(null);
+        }}
+      />
+    </div>
+  );
+};
+
+export default Admin;

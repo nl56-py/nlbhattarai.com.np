@@ -7,8 +7,11 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import CaseStudies from "./pages/CaseStudies";
 import CaseStudyDrParash from "./pages/CaseStudyDrParash";
-import Writing from "./pages/Writing";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
+import Auth from "./pages/Auth";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,8 +27,11 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/case-studies/dr-parash-mani-shrestha" element={<CaseStudyDrParash />} />
-          <Route path="/writing" element={<Writing />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
