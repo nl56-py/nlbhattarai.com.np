@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import CaseStudies from "./pages/CaseStudies";
+import CaseStudyPage from "./pages/CaseStudyPage";
 import CaseStudyDrParash from "./pages/CaseStudyDrParash";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/case-studies/dr-parash-mani-shrestha" element={<CaseStudyDrParash />} />
+          <Route path="/case-studies/:slug" element={<CaseStudyPage />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />

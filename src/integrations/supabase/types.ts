@@ -56,6 +56,63 @@ export type Database = {
         }
         Relationships: []
       }
+      case_studies: {
+        Row: {
+          author_id: string | null
+          category: string
+          client_name: string
+          client_title: string | null
+          content: string
+          cover_image_url: string | null
+          created_at: string
+          description: string | null
+          featured: boolean
+          id: string
+          metrics: Json | null
+          published: boolean
+          slug: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          category?: string
+          client_name: string
+          client_title?: string | null
+          content: string
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          metrics?: Json | null
+          published?: boolean
+          slug: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          category?: string
+          client_name?: string
+          client_title?: string | null
+          content?: string
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          metrics?: Json | null
+          published?: boolean
+          slug?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
