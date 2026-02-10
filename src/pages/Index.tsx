@@ -41,22 +41,22 @@ const Index = () => {
         {/* Hero Section */}
         <section className="section hero-pattern relative overflow-hidden">
           <div className="container-narrow relative z-10">
-            <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
-              {/* Profile Image */}
+            <div className="flex flex-col lg:flex-row items-stretch gap-10 lg:gap-14">
+              {/* Profile Image - Large Banner */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.92 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.9, ease: [0.25, 0.4, 0.25, 1] }}
-                className="relative flex-shrink-0"
+                className="relative flex-shrink-0 lg:w-[45%]"
               >
-                <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-3xl overflow-hidden border border-primary/20 shadow-2xl shadow-primary/10">
+                <div className="w-full h-72 sm:h-80 md:h-96 lg:h-full lg:min-h-[420px] rounded-3xl overflow-hidden border border-primary/20 shadow-2xl shadow-primary/10">
                   <img
                     src={profileImage}
                     alt="N.L. Bhattarai - Digital Authority Specialist"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                   />
                 </div>
-                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-primary/10 rounded-3xl -z-10" />
+                <div className="absolute -bottom-4 -right-4 w-40 h-40 bg-primary/10 rounded-3xl -z-10" />
               </motion.div>
 
               {/* Hero Text */}
