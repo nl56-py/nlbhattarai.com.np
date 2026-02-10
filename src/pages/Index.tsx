@@ -49,11 +49,11 @@ const Index = () => {
                 transition={{ duration: 0.9, ease: [0.25, 0.4, 0.25, 1] }}
                 className="relative flex-shrink-0 lg:w-[45%]"
               >
-                <div className="w-full h-72 sm:h-80 md:h-96 lg:h-full lg:min-h-[420px] rounded-3xl overflow-hidden border border-primary/20 shadow-2xl shadow-primary/10">
+                <div className="w-full rounded-3xl overflow-hidden border border-primary/20 shadow-2xl shadow-primary/10">
                   <img
                     src={profileImage}
                     alt="N.L. Bhattarai - Digital Authority Specialist"
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-auto object-contain"
                   />
                 </div>
                 <div className="absolute -bottom-4 -right-4 w-40 h-40 bg-primary/10 rounded-3xl -z-10" />
