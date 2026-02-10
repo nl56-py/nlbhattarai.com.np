@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
 import AnimatedSection from "@/components/AnimatedSection";
-import profileImage from "@/assets/profile-image.png";
 
 const principles = [
   "I don't promise instant results",
@@ -24,76 +23,42 @@ const About = () => {
           [&_h2]:mb-4
         "
       >
-        {/* Hero Section with Image */}
+        {/* Hero Section */}
         <section className="section">
           <div className="container-narrow">
-            <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-12">
-              {/* Profile Image */}
-              <motion.div
-  initial={{ opacity: 0, scale: 0.92 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{ duration: 0.9, ease: [0.25, 0.4, 0.25, 1] }}
-  className="relative flex-shrink-0"
->
-  <div
-    className="
-      w-72 h-72
-      sm:w-80 sm:h-80
-      md:w-[22rem] md:h-[22rem]
-      lg:w-[26rem] lg:h-[26rem]
-      rounded-3xl
-      overflow-hidden
-      border border-primary/20
-      shadow-2xl shadow-primary/10
-    "
-  >
-    <img
-      src={profileImage}
-      alt="N.L. Bhattarai - Digital Authority Specialist"
-      className="w-full h-full object-cover"
-    />
-  </div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.7,
+                delay: 0.2,
+                ease: [0.25, 0.4, 0.25, 1],
+              }}
+            >
+              <p className="text-primary font-medium mb-4 tracking-wide text-sm uppercase">
+                About
+              </p>
+              <h1 className="text-foreground">N.L. Bhattarai</h1>
+              <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
+                I work with people and organizations who already have real-world
+                credibility but lack a digital presence that reflects it. My focus is
+                building calm, SEO-safe systems that translate expertise into lasting
+                authority—without breaking trust or chasing trends.
+              </p>
 
-  {/* Decorative element */}
-  <div className="absolute -bottom-6 -right-6 w-40 h-40 bg-primary/10 rounded-3xl -z-10" />
-</motion.div>
-
-              {/* Hero Text */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.7,
-                  delay: 0.2,
-                  ease: [0.25, 0.4, 0.25, 1],
-                }}
-              >
-                <p className="text-primary font-medium mb-4 tracking-wide text-sm uppercase">
-                  About
-                </p>
-                <h1 className="text-foreground">N.L. Bhattarai</h1>
-                <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
-                  I work with people and organizations who already have real-world
-                  credibility but lack a digital presence that reflects it. My focus is
-                  building calm, SEO-safe systems that translate expertise into lasting
-                  authority—without breaking trust or chasing trends.
-                </p>
-
-                {/* Expanded detail aligned with updated Home messaging */}
-                <p className="text-muted-foreground mt-4 leading-relaxed">
-                  Most often this includes{" "}
-                  <span className="text-foreground font-medium">
-                    doctors, clinics, and hospitals
-                  </span>
-                  —but the same trust-first structure also supports{" "}
-                  <span className="text-foreground font-medium">
-                    schools, colleges, SMEs, professional services, and growing
-                    institutions
-                  </span>
-                  .
-                </p>
-              </motion.div>
-            </div>
+              <p className="text-muted-foreground mt-4 leading-relaxed">
+                Most often this includes{" "}
+                <span className="text-foreground font-medium">
+                  doctors, clinics, and hospitals
+                </span>
+                —but the same trust-first structure also supports{" "}
+                <span className="text-foreground font-medium">
+                  schools, colleges, SMEs, professional services, and growing
+                  institutions
+                </span>
+                .
+              </p>
+            </motion.div>
           </div>
         </section>
 

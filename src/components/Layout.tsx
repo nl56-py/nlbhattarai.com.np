@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import BackToTopButton from "@/components/BackToTopButton";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -60,6 +61,7 @@ const Layout = ({ children }: LayoutProps) => {
       </motion.header>
 
       <main className="flex-1">{children}</main>
+      <BackToTopButton />
 
       <footer className="border-t border-border/50 bg-card/50">
         <div className="container-wide py-12">

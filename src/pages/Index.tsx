@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
 import AnimatedSection from "@/components/AnimatedSection";
+import profileImage from "@/assets/profile-image.png";
 
 const philosophyItems = [
   {
@@ -40,66 +41,88 @@ const Index = () => {
         {/* Hero Section */}
         <section className="section hero-pattern relative overflow-hidden">
           <div className="container-narrow relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
-            >
-              <p className="text-primary font-medium mb-4 tracking-wide text-sm uppercase">
-                Digital Authority for Professionals & Organizations
-              </p>
-              <h1 className="text-foreground">
-                I build SEO-safe websites that turn{" "}
-                <span className="text-gradient">
-                  trust, expertise and establishment
-                </span>{" "}
-                into digital authority—across sectors.
-              </h1>
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.2,
-                ease: [0.25, 0.4, 0.25, 1],
-              }}
-              className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-2xl"
-            >
-              I help{" "}
-              <span className="text-foreground font-medium">
-                doctors, clinics, and hospitals
-              </span>{" "}
-              build calm, credible digital systems—then apply the same
-              trust-first approach for{" "}
-              <span className="text-foreground font-medium">
-                schools, colleges, SMEs, and service businesses
-              </span>
-              . The focus is always long-term authority, not short-term
-              visibility.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="mt-7 flex flex-wrap gap-4"
-            >
-              <Link
-                to="/case-studies/dr-parash-mani-shrestha"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5"
+            <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
+              {/* Profile Image */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.9, ease: [0.25, 0.4, 0.25, 1] }}
+                className="relative flex-shrink-0"
               >
-                View Case Study
-                <span className="text-lg">→</span>
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 border border-border rounded-lg font-medium text-foreground transition-all duration-300 hover:border-primary/50 hover:bg-accent"
-              >
-                Get in Touch
-              </Link>
-            </motion.div>
+                <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-3xl overflow-hidden border border-primary/20 shadow-2xl shadow-primary/10">
+                  <img
+                    src={profileImage}
+                    alt="N.L. Bhattarai - Digital Authority Specialist"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-primary/10 rounded-3xl -z-10" />
+              </motion.div>
+
+              {/* Hero Text */}
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+                >
+                  <p className="text-primary font-medium mb-4 tracking-wide text-sm uppercase">
+                    Digital Authority for Professionals & Organizations
+                  </p>
+                  <h1 className="text-foreground">
+                    I build SEO-safe websites that turn{" "}
+                    <span className="text-gradient">
+                      trust, expertise and establishment
+                    </span>{" "}
+                    into digital authority—across sectors.
+                  </h1>
+                </motion.div>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.2,
+                    ease: [0.25, 0.4, 0.25, 1],
+                  }}
+                  className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-2xl"
+                >
+                  I help{" "}
+                  <span className="text-foreground font-medium">
+                    doctors, clinics, and hospitals
+                  </span>{" "}
+                  build calm, credible digital systems—then apply the same
+                  trust-first approach for{" "}
+                  <span className="text-foreground font-medium">
+                    schools, colleges, SMEs, and service businesses
+                  </span>
+                  . The focus is always long-term authority, not short-term
+                  visibility.
+                </motion.p>
+
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  className="mt-7 flex flex-wrap gap-4"
+                >
+                  <Link
+                    to="/case-studies/dr-parash-mani-shrestha"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5"
+                  >
+                    View Case Study
+                    <span className="text-lg">→</span>
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-2 px-6 py-3 border border-border rounded-lg font-medium text-foreground transition-all duration-300 hover:border-primary/50 hover:bg-accent"
+                  >
+                    Get in Touch
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
           </div>
 
           {/* Decorative element */}
