@@ -41,6 +41,8 @@ interface BlogEditorProps {
 }
 
 const categories = [
+  "Cyber Security",
+  "Vibe Coding",
   "Strategy",
   "SEO",
   "Healthcare",
