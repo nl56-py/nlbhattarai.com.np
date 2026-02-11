@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
 import AnimatedSection from "@/components/AnimatedSection";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 import profileImage from "@/assets/profile-image.png";
 
 const philosophyItems = [
@@ -26,6 +29,34 @@ const philosophyItems = [
 ];
 
 const Index = () => {
+  const { data: recentBlogs, isLoading: blogsLoading } = useQuery({
+    queryKey: ["recent-blogs"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("blogs")
+        .select("id, title, slug, description, category, cover_image_url, created_at")
+        .eq("published", true)
+        .order("created_at", { ascending: false })
+        .limit(3);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: recentCaseStudies, isLoading: casesLoading } = useQuery({
+    queryKey: ["recent-case-studies"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("case_studies")
+        .select("id, title, slug, description, category, cover_image_url, client_name, created_at")
+        .eq("published", true)
+        .order("created_at", { ascending: false })
+        .limit(2);
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <Layout>
       <div
@@ -131,27 +162,63 @@ const Index = () => {
               </Link>
             </AnimatedSection>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <AnimatedSection className="card-elevated p-6">
-                <h3 className="text-foreground font-medium mb-2">
-                  Healthcare SEO System
-                </h3>
-                <p className="text-muted-foreground">
-                  Built structured authority for a senior medical professional,
-                  focusing on clarity, trust signals, and local SEO dominance.
-                </p>
-              </AnimatedSection>
-
-              <AnimatedSection className="card-elevated p-6">
-                <h3 className="text-foreground font-medium mb-2">
-                  Institutional Web Framework
-                </h3>
-                <p className="text-muted-foreground">
-                  Designed maintainable web architecture for education and
-                  service sectors with long-term scalability.
-                </p>
-              </AnimatedSection>
-            </div>
+            {casesLoading ? (
+              <div className="grid md:grid-cols-2 gap-6">
+                {[1, 2].map((i) => (
+                  <div key={i} className="card-elevated p-6">
+                    <Skeleton className="h-40 w-full mb-4 rounded-lg" />
+                    <Skeleton className="h-5 w-3/4 mb-2" />
+                    <Skeleton className="h-4 w-full" />
+                  </div>
+                ))}
+              </div>
+            ) : recentCaseStudies && recentCaseStudies.length > 0 ? (
+              <div className="grid md:grid-cols-2 gap-6">
+                {recentCaseStudies.map((cs) => (
+                  <AnimatedSection key={cs.id} className="card-elevated group">
+                    <Link to={`/case-studies/${cs.slug}`} className="block">
+                      {cs.cover_image_url && (
+                        <div className="overflow-hidden rounded-t-lg">
+                          <img
+                            src={cs.cover_image_url}
+                            alt={cs.title}
+                            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </div>
+                      )}
+                      <div className="p-6">
+                        <span className="text-xs bg-accent px-3 py-1 rounded-full text-muted-foreground">
+                          {cs.category}
+                        </span>
+                        <h3 className="text-foreground font-medium mt-3 mb-2 group-hover:text-primary transition-colors">
+                          {cs.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm">
+                          {cs.description || `Case study for ${cs.client_name}`}
+                        </p>
+                      </div>
+                    </Link>
+                  </AnimatedSection>
+                ))}
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-6">
+                <AnimatedSection className="card-elevated p-6">
+                  <h3 className="text-foreground font-medium mb-2">Healthcare SEO System</h3>
+                  <p className="text-muted-foreground">
+                    Built structured authority for a senior medical professional,
+                    focusing on clarity, trust signals, and local SEO dominance.
+                  </p>
+                </AnimatedSection>
+                <AnimatedSection className="card-elevated p-6">
+                  <h3 className="text-foreground font-medium mb-2">Institutional Web Framework</h3>
+                  <p className="text-muted-foreground">
+                    Designed maintainable web architecture for education and
+                    service sectors with long-term scalability.
+                  </p>
+                </AnimatedSection>
+              </div>
+            )}
           </div>
         </section>
 
@@ -169,37 +236,63 @@ const Index = () => {
               </Link>
             </AnimatedSection>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              <AnimatedSection className="card-elevated p-6">
-                <h3 className="text-foreground font-medium mb-2">
-                  Cybersecurity Basics for Modern Web Apps
-                </h3>
-                <p className="text-muted-foreground">
-                  Practical fundamentals: secure forms, safe defaults,
-                  and avoiding common attack vectors.
-                </p>
-              </AnimatedSection>
-
-              <AnimatedSection className="card-elevated p-6">
-                <h3 className="text-foreground font-medium mb-2">
-                  What is Vibe Coding?
-                </h3>
-                <p className="text-muted-foreground">
-                  Writing code with clarity, intentional structure,
-                  and calm architecture decisions.
-                </p>
-              </AnimatedSection>
-
-              <AnimatedSection className="card-elevated p-6">
-                <h3 className="text-foreground font-medium mb-2">
-                  Building SEO-Safe React Sites
-                </h3>
-                <p className="text-muted-foreground">
-                  How to structure content and markup without
-                  sacrificing performance or integrity.
-                </p>
-              </AnimatedSection>
-            </div>
+            {blogsLoading ? (
+              <div className="grid md:grid-cols-3 gap-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="card-elevated p-6">
+                    <Skeleton className="h-40 w-full mb-4 rounded-lg" />
+                    <Skeleton className="h-5 w-3/4 mb-2" />
+                    <Skeleton className="h-4 w-full" />
+                  </div>
+                ))}
+              </div>
+            ) : recentBlogs && recentBlogs.length > 0 ? (
+              <div className="grid md:grid-cols-3 gap-6">
+                {recentBlogs.map((post) => (
+                  <AnimatedSection key={post.id} className="card-elevated group">
+                    <Link to={`/blog/${post.slug}`} className="block">
+                      {post.cover_image_url && (
+                        <div className="overflow-hidden rounded-t-lg">
+                          <img
+                            src={post.cover_image_url}
+                            alt={post.title}
+                            className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </div>
+                      )}
+                      <div className="p-6">
+                        <span className="text-xs bg-accent px-3 py-1 rounded-full text-muted-foreground">
+                          {post.category}
+                        </span>
+                        <h3 className="text-foreground font-medium mt-3 mb-2 group-hover:text-primary transition-colors">
+                          {post.title}
+                        </h3>
+                        {post.description && (
+                          <p className="text-muted-foreground text-sm line-clamp-2">
+                            {post.description}
+                          </p>
+                        )}
+                      </div>
+                    </Link>
+                  </AnimatedSection>
+                ))}
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-3 gap-6">
+                <AnimatedSection className="card-elevated p-6">
+                  <h3 className="text-foreground font-medium mb-2">Cybersecurity Basics for Modern Web Apps</h3>
+                  <p className="text-muted-foreground">Practical fundamentals: secure forms, safe defaults, and avoiding common attack vectors.</p>
+                </AnimatedSection>
+                <AnimatedSection className="card-elevated p-6">
+                  <h3 className="text-foreground font-medium mb-2">What is Vibe Coding?</h3>
+                  <p className="text-muted-foreground">Writing code with clarity, intentional structure, and calm architecture decisions.</p>
+                </AnimatedSection>
+                <AnimatedSection className="card-elevated p-6">
+                  <h3 className="text-foreground font-medium mb-2">Building SEO-Safe React Sites</h3>
+                  <p className="text-muted-foreground">How to structure content and markup without sacrificing performance or integrity.</p>
+                </AnimatedSection>
+              </div>
+            )}
           </div>
         </section>
 
