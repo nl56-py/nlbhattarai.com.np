@@ -13,14 +13,14 @@ const principles = [
 const About = () => {
   return (
     <Layout>
-      {/* Compact mode wrapper: reduces vertical spacing while preserving animations/elements */}
+      {/* Tighter wrapper: reduces blank space between sections + dividers */}
       <div
         className="
-          [&_.section]:py-12 md:[&_.section]:py-14
-          [&_.section-sm]:py-10 md:[&_.section-sm]:py-12
-          [&_.divider]:my-8 md:[&_.divider]:my-10
-          [&_h1]:mb-5
-          [&_h2]:mb-4
+          [&_.section]:py-8 md:[&_.section]:py-10
+          [&_.section-sm]:py-6 md:[&_.section-sm]:py-8
+          [&_.divider]:my-4 md:[&_.divider]:my-6
+          [&_h1]:mb-3
+          [&_h2]:mb-3
         "
       >
         {/* Hero Section */}
@@ -35,28 +35,25 @@ const About = () => {
                 ease: [0.25, 0.4, 0.25, 1],
               }}
             >
-              <p className="text-primary font-medium mb-4 tracking-wide text-sm uppercase">
+              <p className="text-primary font-medium mb-3 tracking-wide text-sm uppercase">
                 About
               </p>
               <h1 className="text-foreground">N.L. Bhattarai</h1>
+
               <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
-                I work with people and organizations who already have real-world
-                credibility but lack a digital presence that reflects it. My focus is
-                building calm, SEO-safe systems that translate expertise into lasting
-                authority—without breaking trust or chasing trends.
+                I build calm, SEO-safe websites for people and organizations who rely
+                on trust. My focus is long-term digital authority—clear structure,
+                clean execution, and systems that keep working as you grow.
               </p>
 
-              <p className="text-muted-foreground mt-4 leading-relaxed">
-                Most often this includes{" "}
-                <span className="text-foreground font-medium">
-                  doctors, clinics, and hospitals
-                </span>
-                —but the same trust-first structure also supports{" "}
-                <span className="text-foreground font-medium">
-                  schools, colleges, SMEs, professional services, and growing
-                  institutions
-                </span>
-                .
+              {/* Strategic add: writing + vibe coding + security */}
+              <p className="text-muted-foreground mt-3 leading-relaxed">
+                I also write about{" "}
+                <span className="text-foreground font-medium">cybersecurity</span>,{" "}
+                <span className="text-foreground font-medium">vibe coding</span>, and{" "}
+                <span className="text-foreground font-medium">SEO-safe web builds</span>
+                —sharing practical lessons, patterns, and decisions that help projects
+                stay secure, maintainable, and credible.
               </p>
             </motion.div>
           </div>
@@ -70,7 +67,7 @@ const About = () => {
         <section className="section-sm">
           <div className="container-narrow">
             <AnimatedSection>
-              <p className="text-primary font-medium mb-3 tracking-wide text-sm uppercase">
+              <p className="text-primary font-medium mb-2 tracking-wide text-sm uppercase">
                 Background
               </p>
               <h2 className="text-foreground">What I do</h2>
@@ -93,42 +90,33 @@ const About = () => {
                 Not flashy animations. Not gimmicks. Just a calm interface that
                 communicates expertise.
               </p>
-
-              <p>
-                This applies strongly to healthcare—where trust is fragile—but it also
-                applies to education and SMEs: admissions, inquiries, service requests,
-                partnerships, and reputation all depend on clear communication.
-              </p>
             </AnimatedSection>
 
-            {/* Compact “What you get” block: adds detail without adding new sections */}
-            <AnimatedSection delay={0.2} className="mt-6">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="card-elevated p-5">
-                  <p className="text-foreground font-medium mb-2">Clarity-first pages</p>
+            {/* What you get block (kept; spacing reduced) */}
+            <AnimatedSection delay={0.2} className="mt-4">
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div className="card-elevated p-4">
+                  <p className="text-foreground font-medium mb-1">SEO-safe structure</p>
                   <p className="text-muted-foreground">
-                    Clear navigation, credible content layout, and messaging that
-                    respects the audience.
+                    Clean markup, sensible content layout, and durable foundations.
                   </p>
                 </div>
-                <div className="card-elevated p-5">
-                  <p className="text-foreground font-medium mb-2">SEO-safe structure</p>
+                <div className="card-elevated p-4">
+                  <p className="text-foreground font-medium mb-1">Security-minded build</p>
                   <p className="text-muted-foreground">
-                    Built for long-term discoverability without keyword stuffing or
-                    risky shortcuts.
+                    Safer defaults, careful integrations, and fewer risky shortcuts.
                   </p>
                 </div>
-                <div className="card-elevated p-5">
-                  <p className="text-foreground font-medium mb-2">Trust signals</p>
+                <div className="card-elevated p-4">
+                  <p className="text-foreground font-medium mb-1">Clarity-first UX</p>
                   <p className="text-muted-foreground">
-                    Credentials, process, proof, FAQs, and content hygiene—placed where
-                    they matter.
+                    Pages that explain clearly and reduce decision friction.
                   </p>
                 </div>
-                <div className="card-elevated p-5">
-                  <p className="text-foreground font-medium mb-2">Maintainable system</p>
+                <div className="card-elevated p-4">
+                  <p className="text-foreground font-medium mb-1">Maintainable system</p>
                   <p className="text-muted-foreground">
-                    A structure your team can update without breaking consistency.
+                    Built to update easily without breaking consistency.
                   </p>
                 </div>
               </div>
@@ -144,39 +132,19 @@ const About = () => {
         <section className="section-sm">
           <div className="container-narrow">
             <AnimatedSection>
-              <p className="text-primary font-medium mb-3 tracking-wide text-sm uppercase">
-                Focus Area
+              <p className="text-primary font-medium mb-2 tracking-wide text-sm uppercase">
+                Focus
               </p>
-              <h2 className="text-foreground">Why healthcare and established experts</h2>
+              <h2 className="text-foreground">Where this approach fits best</h2>
             </AnimatedSection>
 
             <AnimatedSection delay={0.1} className="prose-custom">
               <p className="text-lg">
                 High-trust fields demand restraint. In healthcare, education, and
-                professional services, the digital presence must prioritize{" "}
-                <span className="text-foreground font-medium">trust over hype</span> and{" "}
-                <span className="text-foreground font-medium">clarity over persuasion</span>.
-              </p>
-              <p>
-                In healthcare specifically, the cost of confusion is high. Patients
-                don’t need clever copy—they need accurate information, context, and a
-                calm sense of confidence.
-              </p>
-              <p>
-                That’s why I focus on experts and institutions: when real credentials
-                exist, the right digital system can build authority that shallow
-                content cannot replicate—without exaggeration, without distortion.
-              </p>
-            </AnimatedSection>
-
-            {/* Added compact sector note (no new section) */}
-            <AnimatedSection delay={0.2} className="mt-5">
-              <p className="text-muted-foreground">
-                The same approach maps cleanly to{" "}
-                <span className="text-foreground font-medium">schools/colleges</span>{" "}
-                (admissions clarity, parent trust), and{" "}
-                <span className="text-foreground font-medium">SMEs</span>{" "}
-                (steady inquiries, reputation, service clarity).
+                professional services, digital presence must prioritize{" "}
+                <span className="text-foreground font-medium">trust</span>,{" "}
+                <span className="text-foreground font-medium">clarity</span>, and{" "}
+                <span className="text-foreground font-medium">safe execution</span>.
               </p>
             </AnimatedSection>
           </div>
@@ -190,14 +158,14 @@ const About = () => {
         <section className="section-sm">
           <div className="container-narrow">
             <AnimatedSection>
-              <p className="text-primary font-medium mb-3 tracking-wide text-sm uppercase">
+              <p className="text-primary font-medium mb-2 tracking-wide text-sm uppercase">
                 Approach
               </p>
               <h2 className="text-foreground">Working philosophy</h2>
             </AnimatedSection>
 
             <AnimatedSection delay={0.1}>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {principles.map((principle, index) => (
                   <motion.li
                     key={principle}
@@ -214,9 +182,9 @@ const About = () => {
               </ul>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.25} className="mt-7">
+            <AnimatedSection delay={0.25} className="mt-5">
               <p className="text-muted-foreground text-lg italic border-l-2 border-primary pl-6">
-                This approach isn&apos;t fast—but it lasts.
+                I optimize for credibility and longevity—so the work keeps paying off.
               </p>
             </AnimatedSection>
           </div>
@@ -230,39 +198,35 @@ const About = () => {
         <section className="section-sm">
           <div className="container-narrow">
             <AnimatedSection>
-              <p className="text-primary font-medium mb-3 tracking-wide text-sm uppercase">
-                Philosophy
+              <p className="text-primary font-medium mb-2 tracking-wide text-sm uppercase">
+                Next
               </p>
-              <h2 className="text-foreground">On long-term thinking</h2>
+              <h2 className="text-foreground">Explore</h2>
             </AnimatedSection>
 
             <AnimatedSection delay={0.1} className="prose-custom">
               <p className="text-lg">
-                The digital landscape rewards patience. While others chase algorithm
-                updates and trending tactics, sustainable authority comes from
-                consistent, quality-focused work over years.
-              </p>
-              <p>
-                I’ve seen reputations get damaged by “fast growth” strategies—content
-                that overpromises, SEO that cuts corners, and designs that look modern
-                but communicate nothing. It might work briefly, then an update hits (or
-                users lose trust), and everything collapses.
-              </p>
-              <p>
-                My work is built around preservation: protect what already works,
-                translate it clearly, and scale carefully. Every decision is made with
-                long-term stability in mind—not just immediate visibility.
+                If you want to see real work or how I think, start here.
               </p>
             </AnimatedSection>
 
-            {/* Compact CTA footer for About page */}
-            <AnimatedSection delay={0.2} className="mt-7">
+            <AnimatedSection delay={0.2} className="mt-5">
               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 <a
                   href="/case-studies"
                   className="inline-flex items-center gap-2 text-primary font-medium group"
                 >
-                  <span className="link-animated">View documented work</span>
+                  <span className="link-animated">Case studies</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </a>
+                <span className="text-muted-foreground hidden sm:inline">•</span>
+                <a
+                  href="/blog"
+                  className="inline-flex items-center gap-2 text-primary font-medium group"
+                >
+                  <span className="link-animated">Blog</span>
                   <span className="transition-transform duration-300 group-hover:translate-x-1">
                     →
                   </span>
@@ -272,7 +236,7 @@ const About = () => {
                   href="/contact"
                   className="inline-flex items-center gap-2 text-foreground font-medium hover:text-primary transition-colors"
                 >
-                  Contact for a fit check
+                  Contact
                 </a>
               </div>
             </AnimatedSection>
@@ -284,3 +248,4 @@ const About = () => {
 };
 
 export default About;
+

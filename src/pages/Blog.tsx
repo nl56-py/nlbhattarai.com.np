@@ -31,129 +31,180 @@ const Blog = () => {
     },
   });
 
+  const featuredPost = blogs?.[0];
+  const otherPosts = blogs?.slice(1) || [];
+
   return (
     <Layout>
-      {/* Hero */}
-      <section className="section">
-        <div className="container-narrow">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
-          >
-            <p className="text-primary font-medium mb-4 tracking-wide text-sm uppercase">
-              Thoughts & Insights
-            </p>
-            <h1 className="mb-8 text-foreground">Blog</h1>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
-            className="prose-custom"
-          >
-            <p className="text-lg md:text-xl">
-              Notes on building digital systems, preserving trust, and avoiding
-              common mistakes. These aren't tutorials or step-by-step guides—they're
-              observations from working with professionals who care about getting
-              things right.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      <div className="container-narrow">
-        <hr className="divider" />
-      </div>
-
-      {/* Blog Posts */}
-      <section className="section-sm">
-        <div className="container-narrow">
-          {isLoading ? (
-            <div className="space-y-12">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="border-l-2 border-border pl-6 py-4">
-                  <Skeleton className="h-6 w-24 mb-3" />
-                  <Skeleton className="h-8 w-3/4 mb-3" />
-                  <Skeleton className="h-4 w-full mb-2" />
-                  <Skeleton className="h-4 w-2/3" />
-                </div>
-              ))}
-            </div>
-          ) : blogs && blogs.length > 0 ? (
-            <div className="space-y-12">
-              {blogs.map((post, index) => (
-                <AnimatedSection
-                  key={post.id}
-                  delay={index * 0.1}
-                  className="group"
-                >
-                  <Link
-                    to={`/blog/${post.slug}`}
-                    className="block border-l-2 border-border hover:border-primary pl-6 py-4 transition-all duration-300"
-                  >
-                    {post.cover_image_url && (
-                      <div className="mb-4 rounded-lg overflow-hidden">
-                        <img
-                          src={post.cover_image_url}
-                          alt={post.title}
-                          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
-                    )}
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="px-2 py-0.5 text-xs font-medium bg-accent text-muted-foreground rounded">
-                        {post.category}
-                      </span>
-                      <span className="text-xs text-muted-foreground/60">
-                        {new Date(post.created_at).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </span>
-                    </div>
-                    <h2 className="mb-3 text-foreground group-hover:text-primary transition-colors duration-300">
-                      {post.title}
-                    </h2>
-                    {post.description && (
-                      <p className="text-muted-foreground text-base leading-relaxed">
-                        {post.description}
-                      </p>
-                    )}
-                  </Link>
-                </AnimatedSection>
-              ))}
-            </div>
-          ) : (
-            <AnimatedSection className="text-center py-12">
-              <p className="text-muted-foreground text-lg">
-                No blog posts yet. Check back soon for new content.
+      <div
+        className="
+          [&_.section]:py-8 md:[&_.section]:py-10
+          [&_.section-sm]:py-6 md:[&_.section-sm]:py-8
+          [&_.divider]:my-6
+        "
+      >
+        {/* ================= HERO ================= */}
+        <section className="section">
+          <div className="container-narrow">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <p className="text-primary font-medium mb-3 tracking-wide text-sm uppercase">
+                Writing
               </p>
-            </AnimatedSection>
-          )}
+              <h1 className="text-foreground mb-4">Blog</h1>
+
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                Articles on cybersecurity, vibe coding, and building SEO-safe
+                web systems. Practical observations from real implementation—
+                not noise.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        <div className="container-narrow">
+          <hr className="divider" />
         </div>
-      </section>
 
-      <div className="container-narrow">
-        <hr className="divider" />
-      </div>
+        {/* ================= CONTENT ================= */}
 
-      {/* Footer Note */}
-      <section className="section-sm">
-        <div className="container-narrow text-center">
-          <AnimatedSection>
-            <p className="text-muted-foreground">
-              More articles coming as projects progress. Subscribe to updates by{" "}
-              <Link to="/contact" className="link-primary">
-                getting in touch
+        <section className="section-sm">
+          <div className="container-wide">
+
+            {isLoading ? (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="card-elevated p-6">
+                    <Skeleton className="h-40 w-full mb-4 rounded-lg" />
+                    <Skeleton className="h-5 w-24 mb-2" />
+                    <Skeleton className="h-6 w-3/4 mb-3" />
+                    <Skeleton className="h-4 w-full" />
+                  </div>
+                ))}
+              </div>
+            ) : blogs && blogs.length > 0 ? (
+              <>
+                {/* ===== FEATURED POST ===== */}
+                {featuredPost && (
+                  <AnimatedSection className="mb-10">
+                    <Link
+                      to={`/blog/${featuredPost.slug}`}
+                      className="block card-elevated p-8 group"
+                    >
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
+                          Featured
+                        </span>
+                        <span className="px-3 py-1 text-xs bg-accent text-muted-foreground rounded-full">
+                          {featuredPost.category}
+                        </span>
+                      </div>
+
+                      <h2 className="text-2xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                        {featuredPost.title}
+                      </h2>
+
+                      <p className="text-muted-foreground mb-4">
+                        {new Date(featuredPost.created_at).toLocaleDateString(
+                          "en-US",
+                          { year: "numeric", month: "long", day: "numeric" }
+                        )}
+                      </p>
+
+                      {featuredPost.description && (
+                        <p className="text-muted-foreground leading-relaxed mb-4">
+                          {featuredPost.description}
+                        </p>
+                      )}
+
+                      <span className="text-primary font-medium">
+                        Read article →
+                      </span>
+                    </Link>
+                  </AnimatedSection>
+                )}
+
+                {/* ===== OTHER POSTS GRID ===== */}
+                {otherPosts.length > 0 && (
+                  <AnimatedSection>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {otherPosts.map((post) => (
+                        <Link
+                          key={post.id}
+                          to={`/blog/${post.slug}`}
+                          className="card-elevated p-6 group"
+                        >
+                          {post.cover_image_url && (
+                            <div className="mb-4 rounded-lg overflow-hidden">
+                              <img
+                                src={post.cover_image_url}
+                                alt={post.title}
+                                className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                            </div>
+                          )}
+
+                          <span className="text-xs bg-accent px-3 py-1 rounded-full text-muted-foreground">
+                            {post.category}
+                          </span>
+
+                          <h3 className="text-foreground mt-3 mb-2 font-semibold group-hover:text-primary transition-colors">
+                            {post.title}
+                          </h3>
+
+                          <p className="text-xs text-muted-foreground mb-3">
+                            {new Date(post.created_at).toLocaleDateString(
+                              "en-US",
+                              { year: "numeric", month: "short", day: "numeric" }
+                            )}
+                          </p>
+
+                          {post.description && (
+                            <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+                              {post.description}
+                            </p>
+                          )}
+                        </Link>
+                      ))}
+                    </div>
+                  </AnimatedSection>
+                )}
+              </>
+            ) : (
+              <AnimatedSection className="text-center py-10">
+                <p className="text-muted-foreground text-lg">
+                  No published articles yet.
+                </p>
+              </AnimatedSection>
+            )}
+          </div>
+        </section>
+
+        <div className="container-narrow">
+          <hr className="divider" />
+        </div>
+
+        {/* Footer CTA */}
+        <section className="section-sm">
+          <div className="container-narrow text-center">
+            <AnimatedSection>
+              <p className="text-muted-foreground">
+                New articles are added through the admin panel as projects
+                progress.
+              </p>
+              <Link
+                to="/contact"
+                className="inline-block mt-4 text-primary font-medium"
+              >
+                Get in touch →
               </Link>
-              .
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
+            </AnimatedSection>
+          </div>
+        </section>
+      </div>
     </Layout>
   );
 };
