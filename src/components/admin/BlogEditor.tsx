@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import RichTextEditor from "@/components/admin/RichTextEditor";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -303,14 +304,11 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
 
           {/* Content */}
           <div className="space-y-2">
-            <Label htmlFor="content">Content * (HTML supported)</Label>
-            <Textarea
-              id="content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Write your blog content here. HTML tags are supported."
-              rows={12}
-              required
+            <Label>Content *</Label>
+            <RichTextEditor
+              content={content}
+              onChange={setContent}
+              placeholder="Write your blog content here. Paste from Google Docs or Word to preserve formatting."
             />
           </div>
 
