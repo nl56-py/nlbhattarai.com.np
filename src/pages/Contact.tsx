@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 import { MessageCircle, Facebook } from "lucide-react";
 
@@ -12,6 +13,25 @@ const FACEBOOK_PROFILE =
 const Contact = () => {
   return (
     <Layout>
+      <SEO
+        title="Contact N.L. Bhattarai — Let's Build Something"
+        description="Get in touch to discuss your project. I build SEO-safe, secure web systems for healthcare, education, and growing businesses."
+        keywords="contact N.L. Bhattarai, hire web developer Nepal, SEO consultant, healthcare website developer"
+        canonical="https://nlbhattarai.com/contact"
+        jsonLd={[
+          breadcrumbSchema([
+            { name: "Home", url: "https://nlbhattarai.com" },
+            { name: "Contact", url: "https://nlbhattarai.com/contact" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            name: "Contact N.L. Bhattarai",
+            url: "https://nlbhattarai.com/contact",
+            description: "Contact page for project inquiries and consultations.",
+          },
+        ]}
+      />
       {/* Compact spacing wrapper */}
       <div
         className="

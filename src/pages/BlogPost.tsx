@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import Layout from "@/components/Layout";
+import SEO, { articleSchema, breadcrumbSchema } from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -76,6 +77,36 @@ const BlogPost = () => {
 
   return (
     <Layout>
+      <SEO
+        title={blog.title}
+        description={blog.description || `Read "${blog.title}" on N.L. Bhattarai's blog.`}
+        keywords={`${blog.category}, blog, N.L. Bhattarai, ${blog.title}`}
+        canonical={`https://nlbhattarai.com/blog/${blog.slug}`}
+        ogType="article"
+        ogImage={blog.cover_image_url || undefined}
+        ogImageAlt={blog.title}
+        article={{
+          publishedTime: blog.created_at,
+          author: "N.L. Bhattarai",
+          section: blog.category,
+          tags: [blog.category],
+        }}
+        jsonLd={[
+          articleSchema({
+            title: blog.title,
+            description: blog.description || blog.title,
+            url: `https://nlbhattarai.com/blog/${blog.slug}`,
+            image: blog.cover_image_url || undefined,
+            datePublished: blog.created_at,
+            category: blog.category,
+          }),
+          breadcrumbSchema([
+            { name: "Home", url: "https://nlbhattarai.com" },
+            { name: "Blog", url: "https://nlbhattarai.com/blog" },
+            { name: blog.title, url: `https://nlbhattarai.com/blog/${blog.slug}` },
+          ]),
+        ]}
+      />
       <article className="section">
         <div className="container-narrow">
           <motion.div

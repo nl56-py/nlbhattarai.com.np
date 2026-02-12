@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -36,6 +37,26 @@ const Blog = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Blog — Cybersecurity, Vibe Coding & SEO Insights"
+        description="Articles on cybersecurity, vibe coding, and building SEO-safe web systems. Practical observations from real implementation."
+        keywords="cybersecurity blog, vibe coding, SEO blog, web development articles, N.L. Bhattarai blog"
+        canonical="https://nlbhattarai.com/blog"
+        jsonLd={[
+          breadcrumbSchema([
+            { name: "Home", url: "https://nlbhattarai.com" },
+            { name: "Blog", url: "https://nlbhattarai.com/blog" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "Blog",
+            url: "https://nlbhattarai.com/blog",
+            description: "Articles on cybersecurity, vibe coding, and SEO-safe web systems.",
+            author: { "@type": "Person", name: "N.L. Bhattarai" },
+          },
+        ]}
+      />
       <div
         className="
           [&_.section]:py-8 md:[&_.section]:py-10
