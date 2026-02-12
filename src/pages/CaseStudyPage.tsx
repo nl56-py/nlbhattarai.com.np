@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Layout from "@/components/Layout";
+import SEO, { caseStudySchema, breadcrumbSchema } from "@/components/SEO";
 
 interface MetricItem {
   label: string;
@@ -78,6 +79,30 @@ const CaseStudyPage = () => {
 
   return (
     <Layout>
+      <SEO
+        title={`${caseStudy.title} — Case Study`}
+        description={caseStudy.description || `Case study: ${caseStudy.title} for ${caseStudy.client_name}`}
+        keywords={`case study, ${caseStudy.category}, ${caseStudy.client_name}, ${(caseStudy.tags || []).join(", ")}`}
+        canonical={`https://nlbhattarai.com/case-studies/${caseStudy.slug}`}
+        ogImage={caseStudy.cover_image_url || undefined}
+        ogImageAlt={caseStudy.title}
+        jsonLd={[
+          caseStudySchema({
+            title: caseStudy.title,
+            description: caseStudy.description || caseStudy.title,
+            url: `https://nlbhattarai.com/case-studies/${caseStudy.slug}`,
+            image: caseStudy.cover_image_url || undefined,
+            datePublished: caseStudy.created_at,
+            clientName: caseStudy.client_name,
+            category: caseStudy.category,
+          }),
+          breadcrumbSchema([
+            { name: "Home", url: "https://nlbhattarai.com" },
+            { name: "Case Studies", url: "https://nlbhattarai.com/case-studies" },
+            { name: caseStudy.title, url: `https://nlbhattarai.com/case-studies/${caseStudy.slug}` },
+          ]),
+        ]}
+      />
       {/* Back Link */}
       <section className="pt-8 pb-0">
         <div className="container-narrow">

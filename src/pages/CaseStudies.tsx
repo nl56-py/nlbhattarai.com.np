@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Layout from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 
 interface MetricItem {
@@ -47,6 +48,26 @@ const CaseStudies = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Case Studies — Real Projects, Real Results"
+        description="Documented projects focused on long-term authority, secure foundations, and measurable outcomes for healthcare and business."
+        keywords="case studies, healthcare website projects, SEO results, digital authority, web development portfolio"
+        canonical="https://nlbhattarai.com/case-studies"
+        jsonLd={[
+          breadcrumbSchema([
+            { name: "Home", url: "https://nlbhattarai.com" },
+            { name: "Case Studies", url: "https://nlbhattarai.com/case-studies" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "Case Studies",
+            url: "https://nlbhattarai.com/case-studies",
+            description: "Portfolio of documented web development and SEO projects.",
+            author: { "@type": "Person", name: "N.L. Bhattarai" },
+          },
+        ]}
+      />
       <div
         className="
           [&_.section]:py-8 md:[&_.section]:py-10

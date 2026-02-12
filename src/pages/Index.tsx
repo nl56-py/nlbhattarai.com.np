@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
+import SEO, { personSchema, websiteSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -59,6 +60,13 @@ const Index = () => {
 
   return (
     <Layout>
+      <SEO
+        title="N.L. Bhattarai — SEO-Safe Digital Systems for Healthcare & Business"
+        description="I build secure, SEO-safe websites that turn real expertise into digital authority for doctors, clinics, hospitals, and growing businesses."
+        keywords="SEO, web development, healthcare websites, cybersecurity, vibe coding, digital authority, Nepal"
+        canonical="https://nlbhattarai.com"
+        jsonLd={[personSchema(), websiteSchema()]}
+      />
       <div
         className="
           [&_.section]:py-10 md:[&_.section]:py-12

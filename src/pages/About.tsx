@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
+import SEO, { personSchema, breadcrumbSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const principles = [
@@ -13,6 +14,19 @@ const principles = [
 const About = () => {
   return (
     <Layout>
+      <SEO
+        title="About N.L. Bhattarai — Web Developer & SEO Strategist"
+        description="I build calm, SEO-safe websites for people and organizations who rely on trust. Long-term digital authority through clear structure and clean execution."
+        keywords="about N.L. Bhattarai, SEO strategist, web developer Nepal, cybersecurity, healthcare web systems"
+        canonical="https://nlbhattarai.com/about"
+        jsonLd={[
+          personSchema(),
+          breadcrumbSchema([
+            { name: "Home", url: "https://nlbhattarai.com" },
+            { name: "About", url: "https://nlbhattarai.com/about" },
+          ]),
+        ]}
+      />
       {/* Tighter wrapper: reduces blank space between sections + dividers */}
       <div
         className="
