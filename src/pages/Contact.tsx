@@ -1,8 +1,17 @@
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { type PostgrestError } from "@supabase/supabase-js";
 import { motion } from "framer-motion";
+import { useMutation } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
-import { MessageCircle, Facebook } from "lucide-react";
+import { MessageCircle, Facebook, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 const WHATSAPP_NUMBER = "+9779868254104";
 // WhatsApp wa.me needs digits only (no +)
@@ -11,6 +20,73 @@ const FACEBOOK_PROFILE =
   "https://www.facebook.com/profile.php?id=61587263263713";
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+  });
+
+  const submitContactMutation = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("contact_messages").insert({
+        name: formData.name.trim(),
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim(),
+        subject: formData.subject.trim(),
+      });
+
+      if (error) {
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      toast({
+        title: "Message sent",
+        description: "Thanks for reaching out. I'll get back to you within 48 hours.",
+      });
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+      });
+    },
+    onError: (error: PostgrestError) => {
+      toast({
+        title: "Unable to send message",
+        description:
+          error.message ||
+          "Please try again in a moment or contact me directly via email.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleInputChange =
+    (field: "name" | "email" | "phone" | "subject") =>
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setFormData((prev) => ({ ...prev, [field]: event.target.value }));
+    };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const hasEmptyField = Object.values(formData).some((value) => value.trim().length === 0);
+
+    if (hasEmptyField) {
+      toast({
+        title: "Please complete all fields",
+        description: "Name, email, phone number, and subject are all required.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    submitContactMutation.mutate();
+  };
+
   return (
     <Layout>
       <SEO
@@ -93,73 +169,148 @@ const Contact = () => {
             </AnimatedSection>
 
             {/* Cards */}
-               <AnimatedSection delay={0.15} className="mt-6">
-  <div className="grid md:grid-cols-3 gap-4">
+            <AnimatedSection delay={0.15} className="mt-6">
+              <div className="grid md:grid-cols-3 gap-4">
 
-    {/* Email */}
-    <div className="card-elevated glow-primary p-6">
-      <p className="text-muted-foreground mb-3 text-sm uppercase tracking-wide">
-        Email
-      </p>
+                {/* Email */}
+                <div className="card-elevated glow-primary p-6">
+                  <p className="text-muted-foreground mb-3 text-sm uppercase tracking-wide">
+                    Email
+                  </p>
 
-      <a
-        href="mailto:hello@nlbhattarai.com"
-        className="block text-lg md:text-xl font-serif text-foreground hover:text-primary transition-colors duration-300 break-words"
-      >
-        hello@nlbhattarai.com
-      </a>
+                  <a
+                    href="mailto:hello@nlbhattarai.com"
+                    className="block text-lg md:text-xl font-serif text-foreground hover:text-primary transition-colors duration-300 break-words"
+                  >
+                    hello@nlbhattarai.com
+                  </a>
 
-      <p className="text-muted-foreground text-sm mt-2">
-        For project inquiries and detailed discussions.
-      </p>
-    </div>
+                  <p className="text-muted-foreground text-sm mt-2">
+                    For project inquiries and detailed discussions.
+                  </p>
+                </div>
 
-    {/* WhatsApp */}
-    <div className="card-elevated p-6">
-      <p className="text-muted-foreground mb-3 text-sm uppercase tracking-wide">
-        WhatsApp
-      </p>
+                {/* WhatsApp */}
+                <div className="card-elevated p-6">
+                  <p className="text-muted-foreground mb-3 text-sm uppercase tracking-wide">
+                    WhatsApp
+                  </p>
 
-      <a
-        href="https://wa.me/9779868254104"
-        target="_blank"
-        rel="noreferrer"
-        className="inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors duration-300"
-      >
-        <MessageCircle className="w-5 h-5 text-primary" />
-        <span className="text-lg font-medium">
-          +977 9868254104
-        </span>
-      </a>
+                  <a
+                    href={WHATSAPP_WA_ME}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors duration-300"
+                  >
+                    <MessageCircle className="w-5 h-5 text-primary" />
+                    <span className="text-lg font-medium">{WHATSAPP_NUMBER}</span>
+                  </a>
 
-      <p className="text-muted-foreground text-sm mt-2">
-        Quick questions and scheduling.
-      </p>
-    </div>
+                  <p className="text-muted-foreground text-sm mt-2">
+                    Quick questions and scheduling.
+                  </p>
+                </div>
 
-    {/* Facebook */}
-    <div className="card-elevated p-6">
-      <p className="text-muted-foreground mb-3 text-sm uppercase tracking-wide">
-        Facebook
-      </p>
+                {/* Facebook */}
+                <div className="card-elevated p-6">
+                  <p className="text-muted-foreground mb-3 text-sm uppercase tracking-wide">
+                    Facebook
+                  </p>
 
-      <a
-        href="https://www.facebook.com/profile.php?id=61587263263713"
-        target="_blank"
-        rel="noreferrer"
-        className="inline-flex items-center gap-2 text-lg font-medium text-foreground hover:text-primary transition-colors duration-300"
-      >
-        <Facebook className="w-5 h-5 text-primary" />
-        N.L BHATTARAI
-      </a>
+                  <a
+                    href={FACEBOOK_PROFILE}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 text-lg font-medium text-foreground hover:text-primary transition-colors duration-300"
+                  >
+                    <Facebook className="w-5 h-5 text-primary" />
+                    N.L BHATTARAI
+                  </a>
 
-      <p className="text-muted-foreground text-sm mt-2">
-        Public profile and updates.
-      </p>
-    </div>
+                  <p className="text-muted-foreground text-sm mt-2">
+                    Public profile and updates.
+                  </p>
+                </div>
 
-  </div>
-</AnimatedSection>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.2} className="mt-8">
+              <div className="card-elevated p-6 md:p-8">
+                <h2 className="text-foreground text-2xl mb-2">Send a message</h2>
+                <p className="text-muted-foreground mb-6">
+                  Share your basic details and the subject you want to discuss.
+                </p>
+
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Name *</Label>
+                      <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={handleInputChange("name")}
+                        placeholder="Your full name"
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleInputChange("email")}
+                        placeholder="you@example.com"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone number *</Label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        value={formData.phone}
+                        onChange={handleInputChange("phone")}
+                        placeholder="+977 98XXXXXXXX"
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="subject">Subject of discussion *</Label>
+                      <Textarea
+                        id="subject"
+                        value={formData.subject}
+                        onChange={handleInputChange("subject")}
+                        placeholder="What would you like to discuss?"
+                        rows={3}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={submitContactMutation.isPending}
+                    className="min-w-40"
+                  >
+                    {submitContactMutation.isPending ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      "Send message"
+                    )}
+                  </Button>
+                </form>
+              </div>
+            </AnimatedSection>
           </div>
         </section>
 
