@@ -120,7 +120,6 @@ export type Database = {
           id: string
           name: string
           phone: string
-          status: string
           subject: string
         }
         Insert: {
@@ -129,7 +128,6 @@ export type Database = {
           id?: string
           name: string
           phone: string
-          status?: string
           subject: string
         }
         Update: {
@@ -138,7 +136,6 @@ export type Database = {
           id?: string
           name?: string
           phone?: string
-          status?: string
           subject?: string
         }
         Relationships: []

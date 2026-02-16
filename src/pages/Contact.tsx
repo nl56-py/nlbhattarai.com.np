@@ -1,5 +1,4 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { type PostgrestError } from "@supabase/supabase-js";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
@@ -53,12 +52,10 @@ const Contact = () => {
         subject: "",
       });
     },
-    onError: (error: PostgrestError) => {
+    onError: () => {
       toast({
         title: "Unable to send message",
-        description:
-          error.message ||
-          "Please try again in a moment or contact me directly via email.",
+        description: "Please try again in a moment or contact me directly via email.",
         variant: "destructive",
       });
     },
@@ -72,18 +69,6 @@ const Contact = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const hasEmptyField = Object.values(formData).some((value) => value.trim().length === 0);
-
-    if (hasEmptyField) {
-      toast({
-        title: "Please complete all fields",
-        description: "Name, email, phone number, and subject are all required.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     submitContactMutation.mutate();
   };
 
