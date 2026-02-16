@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Pencil, Trash2, Eye, EyeOff, LogOut, Loader2, Star, StarOff } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, LogOut, Loader2, Star, StarOff, PhoneCall } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -47,6 +47,20 @@ interface MetricItem {
   value: string;
 }
 
+
+
+type ContactStatus = "recent" | "viewed" | "reached";
+
+interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  status: ContactStatus;
+  created_at: string;
+}
+
 interface CaseStudy {
   id: string;
   title: string;
@@ -63,6 +77,21 @@ interface CaseStudy {
   published: boolean;
   created_at: string;
 }
+
+
+const CONTACT_STATUS_STYLES: Record<ContactStatus, string> = {
+  recent: "bg-yellow-500/20 text-yellow-400",
+  viewed: "bg-blue-500/20 text-blue-400",
+  reached: "bg-green-500/20 text-green-400",
+};
+
+const CONTACT_STATUS_LABELS: Record<ContactStatus, string> = {
+  recent: "Recent",
+  viewed: "Viewed",
+  reached: "Reached",
+};
+
+const CONTACT_STATUS_ORDER: ContactStatus[] = ["recent", "viewed", "reached"];
 
 const Admin = () => {
   const { user, isAdmin, isLoading: authLoading, signOut } = useAuth();
@@ -108,6 +137,22 @@ const Admin = () => {
     },
     enabled: !!user && isAdmin,
   });
+
+  // Contact message queries
+  const { data: contactMessages, isLoading: contactsLoading } = useQuery({
+    queryKey: ["admin-contact-messages"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("contact_messages")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      return data as ContactMessage[];
+    },
+    enabled: !!user && isAdmin,
+  });
+
 
   // Blog mutations
   const deleteBlogMutation = useMutation({
@@ -181,6 +226,32 @@ const Admin = () => {
     },
   });
 
+  const updateContactStatusMutation = useMutation({
+    mutationFn: async ({ id, status }: { id: string; status: ContactStatus }) => {
+      const { error } = await supabase
+        .from("contact_messages")
+        .update({ status })
+        .eq("id", id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-contact-messages"] });
+      toast({ title: "Contact status updated" });
+    },
+    onError: (error: any) => {
+      toast({ title: "Error updating contact status", description: error.message, variant: "destructive" });
+    },
+  });
+
+  const contactsByStatus = CONTACT_STATUS_ORDER.reduce<Record<ContactStatus, ContactMessage[]>>(
+    (acc, status) => {
+      acc[status] = (contactMessages || []).filter((contact) => contact.status === status);
+      return acc;
+    },
+    { recent: [], viewed: [], reached: [] }
+  );
+
   const handleLogout = async () => {
     await signOut();
     navigate("/");
@@ -234,6 +305,7 @@ const Admin = () => {
             <TabsList>
               <TabsTrigger value="blogs">Blog Posts</TabsTrigger>
               <TabsTrigger value="case-studies">Case Studies</TabsTrigger>
+              <TabsTrigger value="contacts">Contacts</TabsTrigger>
             </TabsList>
 
             {/* Blog Posts Tab */}
@@ -415,6 +487,82 @@ const Admin = () => {
                 </div>
               )}
             </TabsContent>
+
+            {/* Contacts Tab */}
+            <TabsContent value="contacts" className="space-y-5">
+              <div>
+                <h2 className="text-xl font-medium text-foreground">Contact Messages</h2>
+                <p className="text-muted-foreground text-sm">Track inquiries by follow-up status</p>
+              </div>
+
+              {contactsLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                </div>
+              ) : (contactMessages?.length ?? 0) > 0 ? (
+                <div className="grid gap-6 lg:grid-cols-3">
+                  {CONTACT_STATUS_ORDER.map((status) => (
+                    <div key={status} className="border border-border rounded-lg bg-card/50 p-4">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="font-medium text-foreground">{CONTACT_STATUS_LABELS[status]}</h3>
+                        <span className={`px-2 py-0.5 rounded text-xs ${CONTACT_STATUS_STYLES[status]}`}>
+                          {contactsByStatus[status].length}
+                        </span>
+                      </div>
+
+                      <div className="space-y-3">
+                        {contactsByStatus[status].length === 0 ? (
+                          <p className="text-muted-foreground text-sm">No messages in this column.</p>
+                        ) : (
+                          contactsByStatus[status].map((contact) => (
+                            <div key={contact.id} className="rounded-md border border-border bg-background p-3 space-y-3">
+                              <div className="space-y-1">
+                                <p className="font-medium text-foreground text-sm">{contact.name}</p>
+                                <p className="text-xs text-muted-foreground">{contact.email}</p>
+                                <p className="text-xs text-muted-foreground">{contact.phone}</p>
+                              </div>
+
+                              <p className="text-sm text-foreground/90">{contact.subject}</p>
+
+                              <p className="text-xs text-muted-foreground">
+                                {new Date(contact.created_at).toLocaleString()}
+                              </p>
+
+                              <div className="flex items-center gap-2 flex-wrap">
+                                {CONTACT_STATUS_ORDER.map((nextStatus) => (
+                                  <Button
+                                    key={nextStatus}
+                                    variant={nextStatus === contact.status ? "default" : "outline"}
+                                    size="sm"
+                                    disabled={
+                                      nextStatus === contact.status || updateContactStatusMutation.isPending
+                                    }
+                                    onClick={() =>
+                                      updateContactStatusMutation.mutate({
+                                        id: contact.id,
+                                        status: nextStatus,
+                                      })
+                                    }
+                                  >
+                                    {nextStatus === "reached" && <PhoneCall className="w-3 h-3 mr-1" />}
+                                    {CONTACT_STATUS_LABELS[nextStatus]}
+                                  </Button>
+                                ))}
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 border border-border rounded-lg">
+                  <p className="text-muted-foreground">No contact messages yet.</p>
+                </div>
+              )}
+            </TabsContent>
+
           </Tabs>
         </motion.div>
       </main>
