@@ -115,6 +115,16 @@ const Blog = () => {
                       to={`/blog/${featuredPost.slug}`}
                       className="block card-elevated p-8 group"
                     >
+                      {featuredPost.cover_image_url && (
+                        <div className="mb-5 rounded-lg overflow-hidden">
+                          <img
+                            src={featuredPost.cover_image_url}
+                            alt={featuredPost.title}
+                            className="w-full h-56 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </div>
+                      )}
+
                       <div className="flex items-center gap-3 mb-4">
                         <span className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
                           Featured
