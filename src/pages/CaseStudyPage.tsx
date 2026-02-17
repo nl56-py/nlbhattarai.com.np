@@ -81,7 +81,16 @@ const CaseStudyPage = () => {
     );
   }
 
-  const metrics = caseStudy.metrics?.items || [];
+  const metrics = (caseStudy.metrics?.items || []).filter(
+    (metric) => metric?.label?.trim() && metric?.value?.trim()
+  );
+  const hasMetrics = metrics.length > 0;
+  const metricsGridClass =
+    metrics.length === 1
+      ? "grid grid-cols-1 max-w-md mx-auto gap-3"
+      : metrics.length === 2
+        ? "grid grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto gap-3"
+        : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3";
   const seoTitle = caseStudy.seo_title?.trim() || `${caseStudy.title} — Case Study`;
   const seoDescription =
     caseStudy.seo_description?.trim() ||
@@ -187,7 +196,7 @@ const CaseStudyPage = () => {
 
       {/* Cover Image */}
       {caseStudy.cover_image_url && (
-        <section className="pb-8">
+        <section className={hasMetrics ? "pb-5" : "pb-4"}>
           <div className="container-narrow">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -205,14 +214,14 @@ const CaseStudyPage = () => {
       )}
 
       {/* Metrics */}
-      {metrics.length > 0 && (
-        <section className="pb-8">
+      {hasMetrics && (
+        <section className="pb-5">
           <div className="container-narrow">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+              className={metricsGridClass}
             >
               {metrics.map((metric, index) => (
                 <div
@@ -233,11 +242,11 @@ const CaseStudyPage = () => {
       )}
 
       <div className="container-narrow">
-        <hr className="divider" />
+        <hr className="my-6 md:my-8 border-t border-border/50" />
       </div>
 
       {/* Content */}
-      <section className="section-sm">
+      <section className={hasMetrics ? "pt-2 pb-8 md:pb-10" : "pt-0 pb-8 md:pb-10"}>
         <div className="container-narrow">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -250,7 +259,7 @@ const CaseStudyPage = () => {
       </section>
 
       <div className="container-narrow">
-        <hr className="divider" />
+        <hr className="my-6 md:my-8 border-t border-border/50" />
       </div>
 
       {/* CTA */}
