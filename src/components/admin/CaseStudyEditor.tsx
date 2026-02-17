@@ -37,6 +37,11 @@ interface CaseStudy {
   client_name: string;
   client_title: string | null;
   description: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
+  og_image_url: string | null;
+  og_image_alt: string | null;
   content: string;
   category: string;
   cover_image_url: string | null;
@@ -72,6 +77,11 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
   const [clientName, setClientName] = useState("");
   const [clientTitle, setClientTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [seoTitle, setSeoTitle] = useState("");
+  const [seoDescription, setSeoDescription] = useState("");
+  const [seoKeywords, setSeoKeywords] = useState("");
+  const [ogImageUrl, setOgImageUrl] = useState("");
+  const [ogImageAlt, setOgImageAlt] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("General");
   const [tags, setTags] = useState<string[]>([]);
@@ -90,6 +100,11 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
       setClientName(caseStudy.client_name);
       setClientTitle(caseStudy.client_title || "");
       setDescription(caseStudy.description || "");
+      setSeoTitle(caseStudy.seo_title || "");
+      setSeoDescription(caseStudy.seo_description || "");
+      setSeoKeywords(caseStudy.seo_keywords || "");
+      setOgImageUrl(caseStudy.og_image_url || "");
+      setOgImageAlt(caseStudy.og_image_alt || "");
       setContent(caseStudy.content);
       setCategory(caseStudy.category);
       setTags(caseStudy.tags || []);
@@ -109,6 +124,11 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
     setClientName("");
     setClientTitle("");
     setDescription("");
+    setSeoTitle("");
+    setSeoDescription("");
+    setSeoKeywords("");
+    setOgImageUrl("");
+    setOgImageAlt("");
     setContent("");
     setCategory("General");
     setTags([]);
@@ -198,6 +218,11 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
         client_name: clientName,
         client_title: clientTitle || null,
         description: description || null,
+        seo_title: seoTitle.trim() || null,
+        seo_description: seoDescription.trim() || null,
+        seo_keywords: seoKeywords.trim() || null,
+        og_image_url: ogImageUrl.trim() || null,
+        og_image_alt: ogImageAlt.trim() || null,
         content,
         category,
         tags,
@@ -380,6 +405,60 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
               placeholder="Brief summary of the case study"
               rows={2}
             />
+          </div>
+
+          {/* SEO */}
+          <div className="space-y-4 rounded-lg border border-border p-4">
+            <p className="text-sm font-medium text-foreground">SEO Settings</p>
+            <div className="space-y-2">
+              <Label htmlFor="seoTitle">SEO Title</Label>
+              <Input
+                id="seoTitle"
+                value={seoTitle}
+                onChange={(e) => setSeoTitle(e.target.value)}
+                placeholder="Optional custom title tag"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="seoDescription">SEO Description</Label>
+              <Textarea
+                id="seoDescription"
+                value={seoDescription}
+                onChange={(e) => setSeoDescription(e.target.value)}
+                placeholder="Optional custom meta description"
+                rows={2}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="seoKeywords">SEO Keywords</Label>
+              <Input
+                id="seoKeywords"
+                value={seoKeywords}
+                onChange={(e) => setSeoKeywords(e.target.value)}
+                placeholder="keyword one, keyword two, keyword three"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="ogImageUrl">Open Graph Image URL</Label>
+              <Input
+                id="ogImageUrl"
+                value={ogImageUrl}
+                onChange={(e) => setOgImageUrl(e.target.value)}
+                placeholder="Optional social share image URL"
+              />
+              <p className="text-xs text-muted-foreground">
+                Leave blank to use the uploaded cover image.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="ogImageAlt">Open Graph Image Alt Text</Label>
+              <Input
+                id="ogImageAlt"
+                value={ogImageAlt}
+                onChange={(e) => setOgImageAlt(e.target.value)}
+                placeholder="Describe the shared image"
+              />
+            </div>
           </div>
 
           {/* Cover Image */}

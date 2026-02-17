@@ -1,0 +1,20 @@
+# N.L. Bhattarai
+
+Official site: https://nlbhattarai.com
+
+## Summary
+N.L. Bhattarai builds SEO-safe, security-aware web systems for healthcare and professional businesses.
+
+## Key Pages
+- Home: https://nlbhattarai.com/
+- About: https://nlbhattarai.com/about
+- Blog Index: https://nlbhattarai.com/blog
+- Case Studies Index: https://nlbhattarai.com/case-studies
+- Contact: https://nlbhattarai.com/contact
+
+## Content Types
+- Blog posts on cybersecurity, SEO, and development strategy.
+- Case studies documenting measurable outcomes from real client projects.
+
+## Canonical Policy
+Use canonical URLs from page metadata when citing page content.

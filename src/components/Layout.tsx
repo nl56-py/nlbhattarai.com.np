@@ -14,6 +14,8 @@ const navItems = [
   { path: "/contact", label: "Contact" },
 ];
 
+const CONTACT_EMAIL = "contact@nlbhattarai.com.np";
+
 const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
 
@@ -69,15 +71,15 @@ const Layout = ({ children }: LayoutProps) => {
             <div>
               <p className="font-serif text-lg text-foreground mb-1">N.L. Bhattarai</p>
               <p className="text-sm text-muted-foreground">
-                Building digital authority for professionals who deserve it.
+                Building reliable digital systems for professionals and organizations.
               </p>
             </div>
             <div className="flex flex-col items-start md:items-end gap-2">
               <a
-                href="mailto:hello@nlbhattarai.com"
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
               >
-                hello@nlbhattarai.com
+                {CONTACT_EMAIL}
               </a>
               <p className="text-xs text-muted-foreground/60">
                 © {new Date().getFullYear()} All rights reserved.

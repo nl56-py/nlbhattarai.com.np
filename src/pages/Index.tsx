@@ -61,9 +61,9 @@ const Index = () => {
   return (
     <Layout>
       <SEO
-        title="N.L. Bhattarai — SEO-Safe Digital Systems for Healthcare & Business"
-        description="I build secure, SEO-safe websites that turn real expertise into digital authority for doctors, clinics, hospitals, and growing businesses."
-        keywords="SEO, web development, healthcare websites, cybersecurity, vibe coding, digital authority, Nepal"
+        title="N.L. Bhattarai — Websites, Software & Digital Systems"
+        description="I design secure websites, custom software, and SEO-safe digital systems that turn real expertise into scalable digital authority."
+        keywords="software development Nepal, digital systems architect, website and app development, SEO strategy, workflow automation, cybersecurity"
         canonical="https://nlbhattarai.com"
         jsonLd={[personSchema(), websiteSchema()]}
       />
@@ -88,7 +88,7 @@ const Index = () => {
                   transition={{ duration: 0.6 }}
                   className="text-primary font-medium mb-4 tracking-wide text-sm uppercase"
                 >
-                  Secure Web Systems • Vibe Coding • SEO-Safe Builds
+                  Websites • Software • Digital Systems
                 </motion.p>
 
                 <motion.h1
@@ -97,7 +97,7 @@ const Index = () => {
                   transition={{ duration: 0.8 }}
                   className="text-foreground leading-tight text-4xl md:text-6xl font-semibold"
                 >
-                  I build secure, structured websites that turn{" "}
+                  I build secure websites, software, and digital systems that turn{" "}
                   <span className="text-gradient">
                     credibility into digital authority
                   </span>.
@@ -109,11 +109,10 @@ const Index = () => {
                   transition={{ duration: 0.8, delay: 0.2 }}
                   className="mt-6 text-muted-foreground text-lg md:text-xl leading-relaxed"
                 >
-                  I design SEO-safe web systems for healthcare, education,
-                  and growing businesses—combining cybersecurity awareness,
-                  vibe coding, and long-term architecture. I also document
-                  practical lessons through blog writing to build national
-                  and international credibility.
+                  I work across public websites, internal software, workflow
+                  automation, and integrated digital platforms for healthcare,
+                  education, and growing businesses. The goal is long-term,
+                  secure systems that scale with your operations.
                 </motion.p>
 
                 <motion.div
@@ -214,15 +213,15 @@ const Index = () => {
                 <AnimatedSection className="card-elevated p-6">
                   <h3 className="text-foreground font-medium mb-2">Healthcare SEO System</h3>
                   <p className="text-muted-foreground">
-                    Built structured authority for a senior medical professional,
-                    focusing on clarity, trust signals, and local SEO dominance.
+                    Built a structured digital system for a senior medical professional,
+                    combining authority-focused content, trust signals, and local SEO.
                   </p>
                 </AnimatedSection>
                 <AnimatedSection className="card-elevated p-6">
-                  <h3 className="text-foreground font-medium mb-2">Institutional Web Framework</h3>
+                  <h3 className="text-foreground font-medium mb-2">Institutional Digital Platform</h3>
                   <p className="text-muted-foreground">
-                    Designed maintainable web architecture for education and
-                    service sectors with long-term scalability.
+                    Designed maintainable platform architecture for education and
+                    service organizations with long-term scalability.
                   </p>
                 </AnimatedSection>
               </div>

@@ -15,9 +15,9 @@ const About = () => {
   return (
     <Layout>
       <SEO
-        title="About N.L. Bhattarai — Web Developer & SEO Strategist"
-        description="I build calm, SEO-safe websites for people and organizations who rely on trust. Long-term digital authority through clear structure and clean execution."
-        keywords="about N.L. Bhattarai, SEO strategist, web developer Nepal, cybersecurity, healthcare web systems"
+        title="About N.L. Bhattarai — Digital Systems Engineer & SEO Strategist"
+        description="I design secure websites, software, and digital systems for organizations that depend on trust, clarity, and long-term reliability."
+        keywords="about N.L. Bhattarai, digital systems engineer, software developer Nepal, SEO strategist, cybersecurity, system architecture"
         canonical="https://nlbhattarai.com/about"
         jsonLd={[
           personSchema(),
@@ -55,9 +55,9 @@ const About = () => {
               <h1 className="text-foreground">N.L. Bhattarai</h1>
 
               <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
-                I build calm, SEO-safe websites for people and organizations who rely
-                on trust. My focus is long-term digital authority—clear structure,
-                clean execution, and systems that keep working as you grow.
+                I build secure websites, custom software, and digital systems for
+                people and organizations who rely on trust. My focus is long-term
+                digital reliability with clear structure and clean execution.
               </p>
 
               {/* Strategic add: writing + vibe coding + security */}
@@ -65,7 +65,7 @@ const About = () => {
                 I also write about{" "}
                 <span className="text-foreground font-medium">cybersecurity</span>,{" "}
                 <span className="text-foreground font-medium">vibe coding</span>, and{" "}
-                <span className="text-foreground font-medium">SEO-safe web builds</span>
+                <span className="text-foreground font-medium">SEO-safe digital builds</span>
                 —sharing practical lessons, patterns, and decisions that help projects
                 stay secure, maintainable, and credible.
               </p>
@@ -89,7 +89,7 @@ const About = () => {
 
             <AnimatedSection delay={0.1} className="prose-custom">
               <p className="text-lg">
-                I design and build websites that are{" "}
+                I design and build digital systems that are{" "}
                 <span className="text-foreground font-medium">structured</span>,{" "}
                 <span className="text-foreground font-medium">SEO-safe</span>, and{" "}
                 <span className="text-foreground font-medium">trust-oriented</span>.
@@ -99,10 +99,9 @@ const About = () => {
               </p>
 
               <p>
-                The work typically includes information architecture, on-page SEO,
-                content structure, technical foundations, and clarity-driven design.
-                Not flashy animations. Not gimmicks. Just a calm interface that
-                communicates expertise.
+                The work spans public websites, internal tools, automation workflows,
+                content systems, and technical architecture. Not gimmicks or rushed
+                shortcuts. Just clear systems that stay useful over time.
               </p>
             </AnimatedSection>
 
@@ -110,19 +109,19 @@ const About = () => {
             <AnimatedSection delay={0.2} className="mt-4">
               <div className="grid sm:grid-cols-2 gap-3">
                 <div className="card-elevated p-4">
-                  <p className="text-foreground font-medium mb-1">SEO-safe structure</p>
+                  <p className="text-foreground font-medium mb-1">SEO-safe public presence</p>
                   <p className="text-muted-foreground">
-                    Clean markup, sensible content layout, and durable foundations.
+                    Search-friendly structure, clear content layout, and durable foundations.
                   </p>
                 </div>
                 <div className="card-elevated p-4">
-                  <p className="text-foreground font-medium mb-1">Security-minded build</p>
+                  <p className="text-foreground font-medium mb-1">Security-minded engineering</p>
                   <p className="text-muted-foreground">
                     Safer defaults, careful integrations, and fewer risky shortcuts.
                   </p>
                 </div>
                 <div className="card-elevated p-4">
-                  <p className="text-foreground font-medium mb-1">Clarity-first UX</p>
+                  <p className="text-foreground font-medium mb-1">Clarity-first product UX</p>
                   <p className="text-muted-foreground">
                     Pages that explain clearly and reduce decision friction.
                   </p>

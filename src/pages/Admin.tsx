@@ -35,6 +35,11 @@ interface Blog {
   title: string;
   slug: string;
   description: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
+  og_image_url: string | null;
+  og_image_alt: string | null;
   content: string;
   category: string;
   cover_image_url: string | null;
@@ -68,6 +73,11 @@ interface CaseStudy {
   client_name: string;
   client_title: string | null;
   description: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
+  og_image_url: string | null;
+  og_image_alt: string | null;
   content: string;
   category: string;
   cover_image_url: string | null;

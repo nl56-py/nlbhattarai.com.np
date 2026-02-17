@@ -39,9 +39,11 @@ const Blog = () => {
     <Layout>
       <SEO
         title="Blog — Cybersecurity, Vibe Coding & SEO Insights"
-        description="Articles on cybersecurity, vibe coding, and building SEO-safe web systems. Practical observations from real implementation."
-        keywords="cybersecurity blog, vibe coding, SEO blog, web development articles, N.L. Bhattarai blog"
+        description="Articles on cybersecurity, vibe coding, SEO, software architecture, and practical digital systems implementation."
+        keywords="cybersecurity blog, software architecture blog, vibe coding, SEO blog, digital systems articles, N.L. Bhattarai blog"
         canonical="https://nlbhattarai.com/blog"
+        ogImage={featuredPost?.cover_image_url || undefined}
+        ogImageAlt={featuredPost?.title || "N.L. Bhattarai blog"}
         jsonLd={[
           breadcrumbSchema([
             { name: "Home", url: "https://nlbhattarai.com" },
@@ -52,7 +54,7 @@ const Blog = () => {
             "@type": "CollectionPage",
             name: "Blog",
             url: "https://nlbhattarai.com/blog",
-            description: "Articles on cybersecurity, vibe coding, and SEO-safe web systems.",
+            description: "Articles on cybersecurity, software architecture, vibe coding, and SEO-safe digital systems.",
             author: { "@type": "Person", name: "N.L. Bhattarai" },
           },
         ]}
@@ -78,9 +80,9 @@ const Blog = () => {
               <h1 className="text-foreground mb-4">Blog</h1>
 
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Articles on cybersecurity, vibe coding, and building SEO-safe
-                web systems. Practical observations from real implementation—
-                not noise.
+                Articles on cybersecurity, vibe coding, software architecture,
+                and SEO-safe digital systems. Practical observations from
+                real implementation, not noise.
               </p>
             </motion.div>
           </div>

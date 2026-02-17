@@ -29,6 +29,11 @@ interface Blog {
   title: string;
   slug: string;
   description: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
+  og_image_url: string | null;
+  og_image_alt: string | null;
   content: string;
   category: string;
   cover_image_url: string | null;
@@ -60,6 +65,11 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
+  const [seoTitle, setSeoTitle] = useState("");
+  const [seoDescription, setSeoDescription] = useState("");
+  const [seoKeywords, setSeoKeywords] = useState("");
+  const [ogImageUrl, setOgImageUrl] = useState("");
+  const [ogImageAlt, setOgImageAlt] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("General");
   const [published, setPublished] = useState(false);
@@ -72,6 +82,11 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
       setTitle(blog.title);
       setSlug(blog.slug);
       setDescription(blog.description || "");
+      setSeoTitle(blog.seo_title || "");
+      setSeoDescription(blog.seo_description || "");
+      setSeoKeywords(blog.seo_keywords || "");
+      setOgImageUrl(blog.og_image_url || "");
+      setOgImageAlt(blog.og_image_alt || "");
       setContent(blog.content);
       setCategory(blog.category);
       setPublished(blog.published);
@@ -85,6 +100,11 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
     setTitle("");
     setSlug("");
     setDescription("");
+    setSeoTitle("");
+    setSeoDescription("");
+    setSeoKeywords("");
+    setOgImageUrl("");
+    setOgImageAlt("");
     setContent("");
     setCategory("General");
     setPublished(false);
@@ -143,6 +163,11 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
         title,
         slug,
         description: description || null,
+        seo_title: seoTitle.trim() || null,
+        seo_description: seoDescription.trim() || null,
+        seo_keywords: seoKeywords.trim() || null,
+        og_image_url: ogImageUrl.trim() || null,
+        og_image_alt: ogImageAlt.trim() || null,
         content,
         category,
         published,
@@ -266,6 +291,60 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
               placeholder="Brief summary of the post"
               rows={2}
             />
+          </div>
+
+          {/* SEO */}
+          <div className="space-y-4 rounded-lg border border-border p-4">
+            <p className="text-sm font-medium text-foreground">SEO Settings</p>
+            <div className="space-y-2">
+              <Label htmlFor="seoTitle">SEO Title</Label>
+              <Input
+                id="seoTitle"
+                value={seoTitle}
+                onChange={(e) => setSeoTitle(e.target.value)}
+                placeholder="Optional custom title tag"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="seoDescription">SEO Description</Label>
+              <Textarea
+                id="seoDescription"
+                value={seoDescription}
+                onChange={(e) => setSeoDescription(e.target.value)}
+                placeholder="Optional custom meta description"
+                rows={2}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="seoKeywords">SEO Keywords</Label>
+              <Input
+                id="seoKeywords"
+                value={seoKeywords}
+                onChange={(e) => setSeoKeywords(e.target.value)}
+                placeholder="keyword one, keyword two, keyword three"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="ogImageUrl">Open Graph Image URL</Label>
+              <Input
+                id="ogImageUrl"
+                value={ogImageUrl}
+                onChange={(e) => setOgImageUrl(e.target.value)}
+                placeholder="Optional social share image URL"
+              />
+              <p className="text-xs text-muted-foreground">
+                Leave blank to use the uploaded cover image.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="ogImageAlt">Open Graph Image Alt Text</Label>
+              <Input
+                id="ogImageAlt"
+                value={ogImageAlt}
+                onChange={(e) => setOgImageAlt(e.target.value)}
+                placeholder="Describe the shared image"
+              />
+            </div>
           </div>
 
           {/* Cover Image */}

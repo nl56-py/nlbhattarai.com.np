@@ -4,6 +4,13 @@ const SITE_URL = "https://nlbhattarai.com";
 const SITE_NAME = "N.L. Bhattarai";
 const DEFAULT_IMAGE = `${SITE_URL}/og-default.png`;
 
+const toAbsoluteUrl = (value: string) => {
+  if (/^https?:\/\//i.test(value)) return value;
+  if (value.startsWith("//")) return `https:${value}`;
+  if (value.startsWith("/")) return `${SITE_URL}${value}`;
+  return `${SITE_URL}/${value}`;
+};
+
 interface SEOProps {
   title: string;
   description: string;
@@ -38,8 +45,8 @@ const SEO = ({
   const fullTitle = title.includes(SITE_NAME)
     ? title
     : `${title} — ${SITE_NAME}`;
-  const url = canonical || SITE_URL;
-  const image = ogImage || DEFAULT_IMAGE;
+  const url = canonical ? toAbsoluteUrl(canonical) : SITE_URL;
+  const image = toAbsoluteUrl(ogImage || DEFAULT_IMAGE);
 
   const jsonLdArray = jsonLd
     ? Array.isArray(jsonLd)
@@ -62,6 +69,7 @@ const SEO = ({
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={image} />
+      <meta property="og:image:secure_url" content={image} />
       {ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="en_US" />
@@ -88,6 +96,7 @@ const SEO = ({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
+      {ogImageAlt && <meta name="twitter:image:alt" content={ogImageAlt} />}
 
       {/* JSON-LD */}
       {jsonLdArray.map((schema, i) => (
@@ -108,18 +117,20 @@ export const personSchema = () => ({
   "@type": "Person",
   name: "N.L. Bhattarai",
   url: SITE_URL,
-  jobTitle: "Web Developer & SEO Strategist",
+  jobTitle: "Digital Systems Engineer & SEO Strategist",
   description:
-    "Builds SEO-safe, secure web systems for healthcare, education, and growing businesses.",
+    "Builds secure websites, custom software, and SEO-safe digital systems for healthcare, education, and growing businesses.",
   sameAs: [
     "https://www.facebook.com/profile.php?id=61587263263713",
   ],
   knowsAbout: [
     "SEO",
     "Cybersecurity",
-    "Web Development",
+    "Software Development",
+    "System Architecture",
+    "Workflow Automation",
     "Vibe Coding",
-    "Healthcare Web Systems",
+    "Healthcare Digital Systems",
   ],
 });
 
@@ -129,7 +140,7 @@ export const websiteSchema = () => ({
   name: SITE_NAME,
   url: SITE_URL,
   description:
-    "SEO-safe digital systems for healthcare professionals and growing businesses.",
+    "Secure websites, custom software, and SEO-safe digital systems for healthcare professionals and growing businesses.",
   author: { "@type": "Person", name: SITE_NAME },
 });
 
@@ -154,6 +165,7 @@ export const articleSchema = ({
   datePublished,
   dateModified,
   category,
+  keywords,
 }: {
   title: string;
   description: string;
@@ -162,19 +174,22 @@ export const articleSchema = ({
   datePublished: string;
   dateModified?: string;
   category?: string;
+  keywords?: string;
 }) => ({
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": "BlogPosting",
   headline: title,
   description,
-  url,
-  image: image || DEFAULT_IMAGE,
+  url: toAbsoluteUrl(url),
+  image: toAbsoluteUrl(image || DEFAULT_IMAGE),
   datePublished,
   dateModified: dateModified || datePublished,
+  inLanguage: "en",
   author: { "@type": "Person", name: SITE_NAME, url: SITE_URL },
   publisher: { "@type": "Person", name: SITE_NAME, url: SITE_URL },
-  mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  mainEntityOfPage: { "@type": "WebPage", "@id": toAbsoluteUrl(url) },
   ...(category && { articleSection: category }),
+  ...(keywords && { keywords }),
 });
 
 export const caseStudySchema = ({
@@ -183,27 +198,34 @@ export const caseStudySchema = ({
   url,
   image,
   datePublished,
+  dateModified,
   clientName,
   category,
+  keywords,
 }: {
   title: string;
   description: string;
   url: string;
   image?: string;
   datePublished: string;
+  dateModified?: string;
   clientName: string;
   category?: string;
+  keywords?: string;
 }) => ({
   "@context": "https://schema.org",
   "@type": "CreativeWork",
   name: title,
   description,
-  url,
-  image: image || DEFAULT_IMAGE,
+  url: toAbsoluteUrl(url),
+  image: toAbsoluteUrl(image || DEFAULT_IMAGE),
   datePublished,
+  dateModified: dateModified || datePublished,
+  inLanguage: "en",
   author: { "@type": "Person", name: SITE_NAME, url: SITE_URL },
   about: { "@type": "Organization", name: clientName },
   ...(category && { genre: category }),
+  ...(keywords && { keywords }),
 });
 
 export const SITE_URL_CONST = SITE_URL;

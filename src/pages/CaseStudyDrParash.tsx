@@ -1,11 +1,41 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
+import SEO, { breadcrumbSchema, caseStudySchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const CaseStudyDrParash = () => {
   return (
     <Layout>
+      <SEO
+        title="Dr. Parash Mani Shrestha SEO Case Study"
+        description="How Dr. Parash Mani Shrestha grew from zero digital presence to top Google visibility through a structured, trust-first healthcare SEO and web strategy."
+        keywords="Dr Parash Mani Shrestha case study, healthcare SEO Nepal, doctor digital presence strategy, urologist SEO strategy, medical digital authority"
+        canonical="https://nlbhattarai.com/case-studies/dr-parash-mani-shrestha"
+        ogType="article"
+        ogImageAlt="Dr. Parash Mani Shrestha case study results"
+        jsonLd={[
+          caseStudySchema({
+            title: "From Zero Digital Presence to Top Google Rankings",
+            description:
+              "A healthcare SEO and web strategy case study for Dr. Parash Mani Shrestha in Nepal.",
+            url: "https://nlbhattarai.com/case-studies/dr-parash-mani-shrestha",
+            datePublished: "2026-02-08",
+            clientName: "Dr. Parash Mani Shrestha",
+            category: "Healthcare",
+            keywords:
+              "healthcare SEO, urologist SEO, medical digital strategy, Nepal healthcare marketing",
+          }),
+          breadcrumbSchema([
+            { name: "Home", url: "https://nlbhattarai.com" },
+            { name: "Case Studies", url: "https://nlbhattarai.com/case-studies" },
+            {
+              name: "Dr. Parash Mani Shrestha Case Study",
+              url: "https://nlbhattarai.com/case-studies/dr-parash-mani-shrestha",
+            },
+          ]),
+        ]}
+      />
       {/* Hero */}
       <section className="section hero-pattern relative overflow-hidden">
         <div className="container-narrow relative z-10">

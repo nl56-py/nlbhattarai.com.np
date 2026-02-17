@@ -17,6 +17,7 @@ const WHATSAPP_NUMBER = "+9779868254104";
 const WHATSAPP_WA_ME = "https://wa.me/9779868254104";
 const FACEBOOK_PROFILE =
   "https://www.facebook.com/profile.php?id=61587263263713";
+const CONTACT_EMAIL = "contact@nlbhattarai.com.np";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -75,9 +76,9 @@ const Contact = () => {
   return (
     <Layout>
       <SEO
-        title="Contact N.L. Bhattarai — Let's Build Something"
-        description="Get in touch to discuss your project. I build SEO-safe, secure web systems for healthcare, education, and growing businesses."
-        keywords="contact N.L. Bhattarai, hire web developer Nepal, SEO consultant, healthcare website developer"
+        title="Contact N.L. Bhattarai — Let's Build Your Digital System"
+        description="Get in touch to discuss websites, software, automation, or full digital systems. I build secure, scalable solutions for long-term growth."
+        keywords="contact N.L. Bhattarai, software developer Nepal, digital systems consultant, website and app development, SEO consultant"
         canonical="https://nlbhattarai.com/contact"
         jsonLd={[
           breadcrumbSchema([
@@ -128,7 +129,7 @@ const Contact = () => {
               className="prose-custom"
             >
               <p className="text-lg md:text-xl">
-                If you care about building a digital presence the right way—with
+                If you care about building a digital presence or software system the right way—with
                 patience, precision, and respect for what you&apos;ve already built—
                 I&apos;d be glad to hear from you.
               </p>
@@ -148,7 +149,8 @@ const Contact = () => {
                 The best way to start is with a brief message explaining your
                 situation and what you&apos;re trying to achieve. I don&apos;t need
                 a detailed brief at this stage—just enough context to understand
-                whether there&apos;s a good fit.
+                whether there&apos;s a good fit for your website, software, or
+                operational digital system.
               </p>
               <p>I typically respond within 48 hours.</p>
             </AnimatedSection>
@@ -164,10 +166,10 @@ const Contact = () => {
                   </p>
 
                   <a
-                    href="mailto:hello@nlbhattarai.com"
+                    href={`mailto:${CONTACT_EMAIL}`}
                     className="block text-lg md:text-xl font-serif text-foreground hover:text-primary transition-colors duration-300 break-words"
                   >
-                    hello@nlbhattarai.com
+                    {CONTACT_EMAIL}
                   </a>
 
                   <p className="text-muted-foreground text-sm mt-2">

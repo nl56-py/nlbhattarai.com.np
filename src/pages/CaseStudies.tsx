@@ -50,9 +50,11 @@ const CaseStudies = () => {
     <Layout>
       <SEO
         title="Case Studies — Real Projects, Real Results"
-        description="Documented projects focused on long-term authority, secure foundations, and measurable outcomes for healthcare and business."
-        keywords="case studies, healthcare website projects, SEO results, digital authority, web development portfolio"
+        description="Documented projects across websites, software, and digital systems with measurable outcomes for healthcare and business."
+        keywords="case studies, software projects, digital system implementation, SEO results, product engineering portfolio"
         canonical="https://nlbhattarai.com/case-studies"
+        ogImage={featuredStudy?.cover_image_url || undefined}
+        ogImageAlt={featuredStudy?.title || "N.L. Bhattarai case studies"}
         jsonLd={[
           breadcrumbSchema([
             { name: "Home", url: "https://nlbhattarai.com" },
@@ -63,7 +65,7 @@ const CaseStudies = () => {
             "@type": "CollectionPage",
             name: "Case Studies",
             url: "https://nlbhattarai.com/case-studies",
-            description: "Portfolio of documented web development and SEO projects.",
+            description: "Portfolio of documented website, software, and digital systems projects.",
             author: { "@type": "Person", name: "N.L. Bhattarai" },
           },
         ]}
@@ -229,7 +231,7 @@ const CaseStudies = () => {
           <div className="container-narrow text-center">
             <AnimatedSection>
               <p className="text-muted-foreground">
-                Want to build something structured and long-term?
+                Want to build software or a digital system that lasts?
               </p>
               <Link
                 to="/contact"

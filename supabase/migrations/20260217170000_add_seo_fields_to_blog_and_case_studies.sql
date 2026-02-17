@@ -1,0 +1,13 @@
+ALTER TABLE public.blogs
+  ADD COLUMN IF NOT EXISTS seo_title TEXT,
+  ADD COLUMN IF NOT EXISTS seo_description TEXT,
+  ADD COLUMN IF NOT EXISTS seo_keywords TEXT,
+  ADD COLUMN IF NOT EXISTS og_image_url TEXT,
+  ADD COLUMN IF NOT EXISTS og_image_alt TEXT;
+
+ALTER TABLE public.case_studies
+  ADD COLUMN IF NOT EXISTS seo_title TEXT,
+  ADD COLUMN IF NOT EXISTS seo_description TEXT,
+  ADD COLUMN IF NOT EXISTS seo_keywords TEXT,
+  ADD COLUMN IF NOT EXISTS og_image_url TEXT,
+  ADD COLUMN IF NOT EXISTS og_image_alt TEXT;

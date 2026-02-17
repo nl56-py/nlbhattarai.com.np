@@ -12,10 +12,16 @@ interface Blog {
   title: string;
   slug: string;
   description: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
+  og_image_url: string | null;
+  og_image_alt: string | null;
   content: string;
   category: string;
   cover_image_url: string | null;
   created_at: string;
+  updated_at: string;
 }
 
 const BlogPost = () => {
@@ -75,30 +81,48 @@ const BlogPost = () => {
     );
   }
 
+  const seoTitle = blog.seo_title?.trim() || blog.title;
+  const seoDescription =
+    blog.seo_description?.trim() ||
+    blog.description ||
+    `Read "${blog.title}" on N.L. Bhattarai's blog.`;
+  const seoKeywords =
+    blog.seo_keywords?.trim() ||
+    `${blog.category}, blog, N.L. Bhattarai, ${blog.title}`;
+  const ogImage = blog.og_image_url || blog.cover_image_url || undefined;
+  const ogImageAlt = blog.og_image_alt || blog.title;
+  const keywordTags = seoKeywords
+    .split(",")
+    .map((keyword) => keyword.trim())
+    .filter(Boolean);
+
   return (
     <Layout>
       <SEO
-        title={blog.title}
-        description={blog.description || `Read "${blog.title}" on N.L. Bhattarai's blog.`}
-        keywords={`${blog.category}, blog, N.L. Bhattarai, ${blog.title}`}
+        title={seoTitle}
+        description={seoDescription}
+        keywords={seoKeywords}
         canonical={`https://nlbhattarai.com/blog/${blog.slug}`}
         ogType="article"
-        ogImage={blog.cover_image_url || undefined}
-        ogImageAlt={blog.title}
+        ogImage={ogImage}
+        ogImageAlt={ogImageAlt}
         article={{
           publishedTime: blog.created_at,
+          modifiedTime: blog.updated_at || blog.created_at,
           author: "N.L. Bhattarai",
           section: blog.category,
-          tags: [blog.category],
+          tags: keywordTags.length > 0 ? keywordTags : [blog.category],
         }}
         jsonLd={[
           articleSchema({
-            title: blog.title,
-            description: blog.description || blog.title,
+            title: seoTitle,
+            description: seoDescription,
             url: `https://nlbhattarai.com/blog/${blog.slug}`,
-            image: blog.cover_image_url || undefined,
+            image: ogImage,
             datePublished: blog.created_at,
+            dateModified: blog.updated_at || blog.created_at,
             category: blog.category,
+            keywords: seoKeywords,
           }),
           breadcrumbSchema([
             { name: "Home", url: "https://nlbhattarai.com" },

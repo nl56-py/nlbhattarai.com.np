@@ -18,6 +18,11 @@ interface CaseStudy {
   client_name: string;
   client_title: string | null;
   description: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
+  og_image_url: string | null;
+  og_image_alt: string | null;
   content: string;
   category: string;
   cover_image_url: string | null;
@@ -26,6 +31,7 @@ interface CaseStudy {
   featured: boolean;
   published: boolean;
   created_at: string;
+  updated_at: string;
 }
 
 const CaseStudyPage = () => {
@@ -76,25 +82,45 @@ const CaseStudyPage = () => {
   }
 
   const metrics = caseStudy.metrics?.items || [];
+  const seoTitle = caseStudy.seo_title?.trim() || `${caseStudy.title} — Case Study`;
+  const seoDescription =
+    caseStudy.seo_description?.trim() ||
+    caseStudy.description ||
+    `Case study: ${caseStudy.title} for ${caseStudy.client_name}`;
+  const seoKeywords =
+    caseStudy.seo_keywords?.trim() ||
+    `case study, ${caseStudy.category}, ${caseStudy.client_name}, ${(caseStudy.tags || []).join(", ")}`;
+  const ogImage = caseStudy.og_image_url || caseStudy.cover_image_url || undefined;
+  const ogImageAlt = caseStudy.og_image_alt || caseStudy.title;
 
   return (
     <Layout>
       <SEO
-        title={`${caseStudy.title} — Case Study`}
-        description={caseStudy.description || `Case study: ${caseStudy.title} for ${caseStudy.client_name}`}
-        keywords={`case study, ${caseStudy.category}, ${caseStudy.client_name}, ${(caseStudy.tags || []).join(", ")}`}
+        title={seoTitle}
+        description={seoDescription}
+        keywords={seoKeywords}
         canonical={`https://nlbhattarai.com/case-studies/${caseStudy.slug}`}
-        ogImage={caseStudy.cover_image_url || undefined}
-        ogImageAlt={caseStudy.title}
+        ogType="article"
+        ogImage={ogImage}
+        ogImageAlt={ogImageAlt}
+        article={{
+          publishedTime: caseStudy.created_at,
+          modifiedTime: caseStudy.updated_at || caseStudy.created_at,
+          author: "N.L. Bhattarai",
+          section: caseStudy.category,
+          tags: caseStudy.tags || [],
+        }}
         jsonLd={[
           caseStudySchema({
-            title: caseStudy.title,
-            description: caseStudy.description || caseStudy.title,
+            title: seoTitle,
+            description: seoDescription,
             url: `https://nlbhattarai.com/case-studies/${caseStudy.slug}`,
-            image: caseStudy.cover_image_url || undefined,
+            image: ogImage,
             datePublished: caseStudy.created_at,
             clientName: caseStudy.client_name,
             category: caseStudy.category,
+            dateModified: caseStudy.updated_at || caseStudy.created_at,
+            keywords: seoKeywords,
           }),
           breadcrumbSchema([
             { name: "Home", url: "https://nlbhattarai.com" },

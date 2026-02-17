@@ -23,7 +23,12 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          og_image_alt: string | null
+          og_image_url: string | null
           published: boolean
+          seo_description: string | null
+          seo_keywords: string | null
+          seo_title: string | null
           slug: string
           title: string
           updated_at: string
@@ -36,7 +41,12 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          og_image_alt?: string | null
+          og_image_url?: string | null
           published?: boolean
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
           slug: string
           title: string
           updated_at?: string
@@ -49,7 +59,12 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          og_image_alt?: string | null
+          og_image_url?: string | null
           published?: boolean
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
           slug?: string
           title?: string
           updated_at?: string
@@ -69,7 +84,12 @@ export type Database = {
           featured: boolean
           id: string
           metrics: Json | null
+          og_image_alt: string | null
+          og_image_url: string | null
           published: boolean
+          seo_description: string | null
+          seo_keywords: string | null
+          seo_title: string | null
           slug: string
           tags: string[] | null
           title: string
@@ -87,7 +107,12 @@ export type Database = {
           featured?: boolean
           id?: string
           metrics?: Json | null
+          og_image_alt?: string | null
+          og_image_url?: string | null
           published?: boolean
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
           slug: string
           tags?: string[] | null
           title: string
@@ -105,7 +130,12 @@ export type Database = {
           featured?: boolean
           id?: string
           metrics?: Json | null
+          og_image_alt?: string | null
+          og_image_url?: string | null
           published?: boolean
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
           slug?: string
           tags?: string[] | null
           title?: string
@@ -120,6 +150,7 @@ export type Database = {
           id: string
           name: string
           phone: string
+          status: string
           subject: string
         }
         Insert: {
@@ -128,6 +159,7 @@ export type Database = {
           id?: string
           name: string
           phone: string
+          status?: string
           subject: string
         }
         Update: {
@@ -136,6 +168,7 @@ export type Database = {
           id?: string
           name?: string
           phone?: string
+          status?: string
           subject?: string
         }
         Relationships: []
