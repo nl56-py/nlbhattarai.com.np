@@ -212,12 +212,17 @@ const CaseStudyPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="flex flex-wrap gap-8 p-6 bg-card rounded-lg border border-border/50"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
             >
               {metrics.map((metric, index) => (
-                <div key={index}>
-                  <p className="text-3xl font-serif text-primary">{metric.value}</p>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                <div
+                  key={index}
+                  className="rounded-md border border-border/60 bg-card/70 p-3"
+                >
+                  <p className="text-sm md:text-base font-medium text-foreground leading-snug">
+                    {metric.value}
+                  </p>
+                  <p className="mt-1 text-[10px] text-muted-foreground uppercase tracking-wide">
                     {metric.label}
                   </p>
                 </div>
