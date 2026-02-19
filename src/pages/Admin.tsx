@@ -29,6 +29,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import BlogEditor from "@/components/admin/BlogEditor";
 import CaseStudyEditor from "@/components/admin/CaseStudyEditor";
+import {
+  ADMIN_WRITES_LOCK_REASON,
+  adminWritesLocked,
+} from "@/lib/maintenance";
 
 interface Blog {
   id: string;
@@ -103,16 +107,28 @@ const CONTACT_STATUS_LABELS: Record<ContactStatus, string> = {
 
 const CONTACT_STATUS_ORDER: ContactStatus[] = ["recent", "viewed", "reached"];
 
+const getErrorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : "An unexpected error occurred.";
+
 const Admin = () => {
   const { user, isAdmin, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const writesLocked = adminWritesLocked;
   
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
   const [isBlogEditorOpen, setIsBlogEditorOpen] = useState(false);
   const [editingCaseStudy, setEditingCaseStudy] = useState<CaseStudy | null>(null);
   const [isCaseStudyEditorOpen, setIsCaseStudyEditorOpen] = useState(false);
+
+  const showWritesLockedToast = () => {
+    toast({
+      title: "Admin writes are locked",
+      description: ADMIN_WRITES_LOCK_REASON,
+      variant: "destructive",
+    });
+  };
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -167,6 +183,9 @@ const Admin = () => {
   // Blog mutations
   const deleteBlogMutation = useMutation({
     mutationFn: async (id: string) => {
+      if (writesLocked) {
+        throw new Error(ADMIN_WRITES_LOCK_REASON);
+      }
       const { error } = await supabase.from("blogs").delete().eq("id", id);
       if (error) throw error;
     },
@@ -174,13 +193,16 @@ const Admin = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-blogs"] });
       toast({ title: "Blog deleted successfully" });
     },
-    onError: (error: any) => {
-      toast({ title: "Error deleting blog", description: error.message, variant: "destructive" });
+    onError: (error: unknown) => {
+      toast({ title: "Error deleting blog", description: getErrorMessage(error), variant: "destructive" });
     },
   });
 
   const toggleBlogPublishMutation = useMutation({
     mutationFn: async ({ id, published }: { id: string; published: boolean }) => {
+      if (writesLocked) {
+        throw new Error(ADMIN_WRITES_LOCK_REASON);
+      }
       const { error } = await supabase.from("blogs").update({ published }).eq("id", id);
       if (error) throw error;
     },
@@ -188,14 +210,17 @@ const Admin = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-blogs"] });
       toast({ title: "Blog status updated" });
     },
-    onError: (error: any) => {
-      toast({ title: "Error updating blog", description: error.message, variant: "destructive" });
+    onError: (error: unknown) => {
+      toast({ title: "Error updating blog", description: getErrorMessage(error), variant: "destructive" });
     },
   });
 
   // Case study mutations
   const deleteCaseStudyMutation = useMutation({
     mutationFn: async (id: string) => {
+      if (writesLocked) {
+        throw new Error(ADMIN_WRITES_LOCK_REASON);
+      }
       const { error } = await supabase.from("case_studies").delete().eq("id", id);
       if (error) throw error;
     },
@@ -203,13 +228,16 @@ const Admin = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-case-studies"] });
       toast({ title: "Case study deleted successfully" });
     },
-    onError: (error: any) => {
-      toast({ title: "Error deleting case study", description: error.message, variant: "destructive" });
+    onError: (error: unknown) => {
+      toast({ title: "Error deleting case study", description: getErrorMessage(error), variant: "destructive" });
     },
   });
 
   const toggleCaseStudyPublishMutation = useMutation({
     mutationFn: async ({ id, published }: { id: string; published: boolean }) => {
+      if (writesLocked) {
+        throw new Error(ADMIN_WRITES_LOCK_REASON);
+      }
       const { error } = await supabase.from("case_studies").update({ published }).eq("id", id);
       if (error) throw error;
     },
@@ -217,13 +245,16 @@ const Admin = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-case-studies"] });
       toast({ title: "Case study status updated" });
     },
-    onError: (error: any) => {
-      toast({ title: "Error updating case study", description: error.message, variant: "destructive" });
+    onError: (error: unknown) => {
+      toast({ title: "Error updating case study", description: getErrorMessage(error), variant: "destructive" });
     },
   });
 
   const toggleCaseStudyFeatureMutation = useMutation({
     mutationFn: async ({ id, featured }: { id: string; featured: boolean }) => {
+      if (writesLocked) {
+        throw new Error(ADMIN_WRITES_LOCK_REASON);
+      }
       const { error } = await supabase.from("case_studies").update({ featured }).eq("id", id);
       if (error) throw error;
     },
@@ -231,13 +262,16 @@ const Admin = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-case-studies"] });
       toast({ title: "Case study feature status updated" });
     },
-    onError: (error: any) => {
-      toast({ title: "Error updating case study", description: error.message, variant: "destructive" });
+    onError: (error: unknown) => {
+      toast({ title: "Error updating case study", description: getErrorMessage(error), variant: "destructive" });
     },
   });
 
   const updateContactStatusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: ContactStatus }) => {
+      if (writesLocked) {
+        throw new Error(ADMIN_WRITES_LOCK_REASON);
+      }
       const { error } = await supabase
         .from("contact_messages")
         .update({ status })
@@ -249,8 +283,8 @@ const Admin = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-contact-messages"] });
       toast({ title: "Contact status updated" });
     },
-    onError: (error: any) => {
-      toast({ title: "Error updating contact status", description: error.message, variant: "destructive" });
+    onError: (error: unknown) => {
+      toast({ title: "Error updating contact status", description: getErrorMessage(error), variant: "destructive" });
     },
   });
 
@@ -311,6 +345,11 @@ const Admin = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
+          {writesLocked && (
+            <div className="mb-4 rounded-lg border border-yellow-500/40 bg-yellow-500/10 p-3 text-sm text-yellow-300">
+              Maintenance mode is enabled. Admin write actions are currently disabled.
+            </div>
+          )}
           <Tabs defaultValue="blogs" className="space-y-6">
             <TabsList>
               <TabsTrigger value="blogs">Blog Posts</TabsTrigger>
@@ -325,7 +364,17 @@ const Admin = () => {
                   <h2 className="text-xl font-medium text-foreground">Blog Posts</h2>
                   <p className="text-muted-foreground text-sm">Manage your blog content</p>
                 </div>
-                <Button onClick={() => { setEditingBlog(null); setIsBlogEditorOpen(true); }}>
+                <Button
+                  disabled={writesLocked}
+                  onClick={() => {
+                    if (writesLocked) {
+                      showWritesLockedToast();
+                      return;
+                    }
+                    setEditingBlog(null);
+                    setIsBlogEditorOpen(true);
+                  }}
+                >
                   <Plus className="w-4 h-4 mr-2" />
                   New Post
                 </Button>
@@ -364,15 +413,44 @@ const Admin = () => {
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex items-center justify-end gap-2">
-                              <Button variant="ghost" size="icon" onClick={() => toggleBlogPublishMutation.mutate({ id: blog.id, published: !blog.published })} title={blog.published ? "Unpublish" : "Publish"}>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                disabled={writesLocked || toggleBlogPublishMutation.isPending}
+                                onClick={() => {
+                                  if (writesLocked) {
+                                    showWritesLockedToast();
+                                    return;
+                                  }
+                                  toggleBlogPublishMutation.mutate({
+                                    id: blog.id,
+                                    published: !blog.published,
+                                  });
+                                }}
+                                title={blog.published ? "Unpublish" : "Publish"}
+                              >
                                 {blog.published ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                               </Button>
-                              <Button variant="ghost" size="icon" onClick={() => { setEditingBlog(blog); setIsBlogEditorOpen(true); }}>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                disabled={writesLocked}
+                                onClick={() => {
+                                  if (writesLocked) {
+                                    showWritesLockedToast();
+                                    return;
+                                  }
+                                  setEditingBlog(blog);
+                                  setIsBlogEditorOpen(true);
+                                }}
+                              >
                                 <Pencil className="w-4 h-4" />
                               </Button>
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                  <Button variant="ghost" size="icon"><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                                  <Button variant="ghost" size="icon" disabled={writesLocked}>
+                                    <Trash2 className="w-4 h-4 text-destructive" />
+                                  </Button>
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                   <AlertDialogHeader>
@@ -381,7 +459,19 @@ const Admin = () => {
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => deleteBlogMutation.mutate(blog.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
+                                    <AlertDialogAction
+                                      disabled={writesLocked || deleteBlogMutation.isPending}
+                                      onClick={() => {
+                                        if (writesLocked) {
+                                          showWritesLockedToast();
+                                          return;
+                                        }
+                                        deleteBlogMutation.mutate(blog.id);
+                                      }}
+                                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                    >
+                                      Delete
+                                    </AlertDialogAction>
                                   </AlertDialogFooter>
                                 </AlertDialogContent>
                               </AlertDialog>
@@ -395,7 +485,17 @@ const Admin = () => {
               ) : (
                 <div className="text-center py-12 border border-border rounded-lg">
                   <p className="text-muted-foreground mb-4">No blog posts yet</p>
-                  <Button onClick={() => { setEditingBlog(null); setIsBlogEditorOpen(true); }}>
+                  <Button
+                    disabled={writesLocked}
+                    onClick={() => {
+                      if (writesLocked) {
+                        showWritesLockedToast();
+                        return;
+                      }
+                      setEditingBlog(null);
+                      setIsBlogEditorOpen(true);
+                    }}
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     Create your first post
                   </Button>
@@ -410,7 +510,17 @@ const Admin = () => {
                   <h2 className="text-xl font-medium text-foreground">Case Studies</h2>
                   <p className="text-muted-foreground text-sm">Manage your portfolio case studies</p>
                 </div>
-                <Button onClick={() => { setEditingCaseStudy(null); setIsCaseStudyEditorOpen(true); }}>
+                <Button
+                  disabled={writesLocked}
+                  onClick={() => {
+                    if (writesLocked) {
+                      showWritesLockedToast();
+                      return;
+                    }
+                    setEditingCaseStudy(null);
+                    setIsCaseStudyEditorOpen(true);
+                  }}
+                >
                   <Plus className="w-4 h-4 mr-2" />
                   New Case Study
                 </Button>
@@ -456,18 +566,62 @@ const Admin = () => {
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex items-center justify-end gap-2">
-                              <Button variant="ghost" size="icon" onClick={() => toggleCaseStudyFeatureMutation.mutate({ id: cs.id, featured: !cs.featured })} title={cs.featured ? "Unfeature" : "Feature"}>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                disabled={writesLocked || toggleCaseStudyFeatureMutation.isPending}
+                                onClick={() => {
+                                  if (writesLocked) {
+                                    showWritesLockedToast();
+                                    return;
+                                  }
+                                  toggleCaseStudyFeatureMutation.mutate({
+                                    id: cs.id,
+                                    featured: !cs.featured,
+                                  });
+                                }}
+                                title={cs.featured ? "Unfeature" : "Feature"}
+                              >
                                 {cs.featured ? <StarOff className="w-4 h-4" /> : <Star className="w-4 h-4" />}
                               </Button>
-                              <Button variant="ghost" size="icon" onClick={() => toggleCaseStudyPublishMutation.mutate({ id: cs.id, published: !cs.published })} title={cs.published ? "Unpublish" : "Publish"}>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                disabled={writesLocked || toggleCaseStudyPublishMutation.isPending}
+                                onClick={() => {
+                                  if (writesLocked) {
+                                    showWritesLockedToast();
+                                    return;
+                                  }
+                                  toggleCaseStudyPublishMutation.mutate({
+                                    id: cs.id,
+                                    published: !cs.published,
+                                  });
+                                }}
+                                title={cs.published ? "Unpublish" : "Publish"}
+                              >
                                 {cs.published ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                               </Button>
-                              <Button variant="ghost" size="icon" onClick={() => { setEditingCaseStudy(cs); setIsCaseStudyEditorOpen(true); }}>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                disabled={writesLocked}
+                                onClick={() => {
+                                  if (writesLocked) {
+                                    showWritesLockedToast();
+                                    return;
+                                  }
+                                  setEditingCaseStudy(cs);
+                                  setIsCaseStudyEditorOpen(true);
+                                }}
+                              >
                                 <Pencil className="w-4 h-4" />
                               </Button>
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                  <Button variant="ghost" size="icon"><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                                  <Button variant="ghost" size="icon" disabled={writesLocked}>
+                                    <Trash2 className="w-4 h-4 text-destructive" />
+                                  </Button>
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                   <AlertDialogHeader>
@@ -476,7 +630,19 @@ const Admin = () => {
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => deleteCaseStudyMutation.mutate(cs.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
+                                    <AlertDialogAction
+                                      disabled={writesLocked || deleteCaseStudyMutation.isPending}
+                                      onClick={() => {
+                                        if (writesLocked) {
+                                          showWritesLockedToast();
+                                          return;
+                                        }
+                                        deleteCaseStudyMutation.mutate(cs.id);
+                                      }}
+                                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                    >
+                                      Delete
+                                    </AlertDialogAction>
                                   </AlertDialogFooter>
                                 </AlertDialogContent>
                               </AlertDialog>
@@ -490,7 +656,17 @@ const Admin = () => {
               ) : (
                 <div className="text-center py-12 border border-border rounded-lg">
                   <p className="text-muted-foreground mb-4">No case studies yet</p>
-                  <Button onClick={() => { setEditingCaseStudy(null); setIsCaseStudyEditorOpen(true); }}>
+                  <Button
+                    disabled={writesLocked}
+                    onClick={() => {
+                      if (writesLocked) {
+                        showWritesLockedToast();
+                        return;
+                      }
+                      setEditingCaseStudy(null);
+                      setIsCaseStudyEditorOpen(true);
+                    }}
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     Create your first case study
                   </Button>
@@ -545,13 +721,17 @@ const Admin = () => {
                                     variant={nextStatus === contact.status ? "default" : "outline"}
                                     size="sm"
                                     disabled={
-                                      nextStatus === contact.status || updateContactStatusMutation.isPending
+                                      writesLocked ||
+                                      nextStatus === contact.status ||
+                                      updateContactStatusMutation.isPending
                                     }
                                     onClick={() =>
-                                      updateContactStatusMutation.mutate({
-                                        id: contact.id,
-                                        status: nextStatus,
-                                      })
+                                      writesLocked
+                                        ? showWritesLockedToast()
+                                        : updateContactStatusMutation.mutate({
+                                            id: contact.id,
+                                            status: nextStatus,
+                                          })
                                     }
                                   >
                                     {nextStatus === "reached" && <PhoneCall className="w-3 h-3 mr-1" />}
@@ -578,8 +758,24 @@ const Admin = () => {
       </main>
 
       {/* Editors */}
-      <BlogEditor blog={editingBlog} isOpen={isBlogEditorOpen} onClose={() => { setIsBlogEditorOpen(false); setEditingBlog(null); }} />
-      <CaseStudyEditor caseStudy={editingCaseStudy} isOpen={isCaseStudyEditorOpen} onClose={() => { setIsCaseStudyEditorOpen(false); setEditingCaseStudy(null); }} />
+      <BlogEditor
+        blog={editingBlog}
+        isOpen={isBlogEditorOpen}
+        writesLocked={writesLocked}
+        onClose={() => {
+          setIsBlogEditorOpen(false);
+          setEditingBlog(null);
+        }}
+      />
+      <CaseStudyEditor
+        caseStudy={editingCaseStudy}
+        isOpen={isCaseStudyEditorOpen}
+        writesLocked={writesLocked}
+        onClose={() => {
+          setIsCaseStudyEditorOpen(false);
+          setEditingCaseStudy(null);
+        }}
+      />
     </div>
   );
 };

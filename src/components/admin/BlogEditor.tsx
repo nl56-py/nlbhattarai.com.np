@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ADMIN_WRITES_LOCK_REASON } from "@/lib/maintenance";
 
 interface Blog {
   id: string;
@@ -43,6 +44,7 @@ interface Blog {
 interface BlogEditorProps {
   blog: Blog | null;
   isOpen: boolean;
+  writesLocked?: boolean;
   onClose: () => void;
 }
 
@@ -57,7 +59,15 @@ const categories = [
   "General",
 ];
 
-const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
+const getErrorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : "An unexpected error occurred.";
+
+const BlogEditor = ({
+  blog,
+  isOpen,
+  writesLocked = false,
+  onClose,
+}: BlogEditorProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -146,6 +156,10 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
+      if (writesLocked) {
+        throw new Error(ADMIN_WRITES_LOCK_REASON);
+      }
+
       let imageUrl = coverImageUrl;
 
       if (coverImage) {
@@ -193,10 +207,10 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
       onClose();
       resetForm();
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast({
         title: "Error saving blog",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     },
@@ -233,10 +247,24 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            if (writesLocked) {
+              toast({
+                title: "Admin writes are locked",
+                description: ADMIN_WRITES_LOCK_REASON,
+                variant: "destructive",
+              });
+              return;
+            }
             saveMutation.mutate();
           }}
           className="space-y-6"
         >
+          {writesLocked && (
+            <p className="rounded-md border border-yellow-500/40 bg-yellow-500/10 p-3 text-sm text-yellow-300">
+              Maintenance mode is enabled. Saving and uploading are currently disabled.
+            </p>
+          )}
+
           {/* Title */}
           <div className="space-y-2">
             <Label htmlFor="title">Title *</Label>
@@ -360,13 +388,20 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
                 <button
                   type="button"
                   onClick={removeImage}
+                  disabled={writesLocked}
                   className="absolute top-2 right-2 p-1 bg-background/80 rounded-full hover:bg-background transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             ) : (
-              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+              <label
+                className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-lg transition-colors ${
+                  writesLocked
+                    ? "cursor-not-allowed opacity-60"
+                    : "cursor-pointer hover:border-primary/50"
+                }`}
+              >
                 <Upload className="w-6 h-6 text-muted-foreground mb-2" />
                 <span className="text-sm text-muted-foreground">
                   Click to upload cover image
@@ -375,6 +410,7 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
+                  disabled={writesLocked}
                   className="hidden"
                 />
               </label>
@@ -397,6 +433,7 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
               id="published"
               checked={published}
               onCheckedChange={setPublished}
+              disabled={writesLocked}
             />
             <Label htmlFor="published">Publish immediately</Label>
           </div>
@@ -408,7 +445,7 @@ const BlogEditor = ({ blog, isOpen, onClose }: BlogEditorProps) => {
             </Button>
             <Button
               type="submit"
-              disabled={saveMutation.isPending || isUploading}
+              disabled={writesLocked || saveMutation.isPending || isUploading}
             >
               {saveMutation.isPending || isUploading ? (
                 <>

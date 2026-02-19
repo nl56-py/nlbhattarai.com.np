@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ADMIN_WRITES_LOCK_REASON } from "@/lib/maintenance";
 
 interface MetricItem {
   label: string;
@@ -54,6 +55,7 @@ interface CaseStudy {
 interface CaseStudyEditorProps {
   caseStudy: CaseStudy | null;
   isOpen: boolean;
+  writesLocked?: boolean;
   onClose: () => void;
 }
 
@@ -67,7 +69,15 @@ const categories = [
   "General",
 ];
 
-const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) => {
+const getErrorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : "An unexpected error occurred.";
+
+const CaseStudyEditor = ({
+  caseStudy,
+  isOpen,
+  writesLocked = false,
+  onClose,
+}: CaseStudyEditorProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -199,6 +209,10 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
 
   const saveMutation = useMutation({
     mutationFn: async () => {
+      if (writesLocked) {
+        throw new Error(ADMIN_WRITES_LOCK_REASON);
+      }
+
       let imageUrl = coverImageUrl;
 
       if (coverImage) {
@@ -251,10 +265,10 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
       onClose();
       resetForm();
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast({
         title: "Error saving case study",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     },
@@ -291,10 +305,24 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            if (writesLocked) {
+              toast({
+                title: "Admin writes are locked",
+                description: ADMIN_WRITES_LOCK_REASON,
+                variant: "destructive",
+              });
+              return;
+            }
             saveMutation.mutate();
           }}
           className="space-y-6"
         >
+          {writesLocked && (
+            <p className="rounded-md border border-yellow-500/40 bg-yellow-500/10 p-3 text-sm text-yellow-300">
+              Maintenance mode is enabled. Saving and uploading are currently disabled.
+            </p>
+          )}
+
           {/* Title & Slug Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -474,13 +502,20 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
                 <button
                   type="button"
                   onClick={removeImage}
+                  disabled={writesLocked}
                   className="absolute top-2 right-2 p-1 bg-background/80 rounded-full hover:bg-background transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             ) : (
-              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+              <label
+                className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-lg transition-colors ${
+                  writesLocked
+                    ? "cursor-not-allowed opacity-60"
+                    : "cursor-pointer hover:border-primary/50"
+                }`}
+              >
                 <Upload className="w-6 h-6 text-muted-foreground mb-2" />
                 <span className="text-sm text-muted-foreground">
                   Click to upload cover image
@@ -489,6 +524,7 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
+                  disabled={writesLocked}
                   className="hidden"
                 />
               </label>
@@ -551,6 +587,7 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
                 id="published"
                 checked={published}
                 onCheckedChange={setPublished}
+                disabled={writesLocked}
               />
               <Label htmlFor="published">Published</Label>
             </div>
@@ -559,6 +596,7 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
                 id="featured"
                 checked={featured}
                 onCheckedChange={setFeatured}
+                disabled={writesLocked}
               />
               <Label htmlFor="featured">Featured</Label>
             </div>
@@ -571,7 +609,7 @@ const CaseStudyEditor = ({ caseStudy, isOpen, onClose }: CaseStudyEditorProps) =
             </Button>
             <Button
               type="submit"
-              disabled={saveMutation.isPending || isUploading}
+              disabled={writesLocked || saveMutation.isPending || isUploading}
             >
               {saveMutation.isPending || isUploading ? (
                 <>
