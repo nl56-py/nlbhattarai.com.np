@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Layout from "@/components/Layout";
-import SEO, { breadcrumbSchema } from "@/components/SEO";
+import SEO, { breadcrumbSchema, webpageSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 
 interface MetricItem {
@@ -56,6 +56,12 @@ const CaseStudies = () => {
         ogImage={featuredStudy?.cover_image_url || undefined}
         ogImageAlt={featuredStudy?.title || "N.L. Bhattarai case studies"}
         jsonLd={[
+          webpageSchema({
+            title: "Case Studies - Real Projects, Real Results",
+            description:
+              "Documented projects across websites, software, and digital systems with measurable outcomes for healthcare and business.",
+            url: "https://nlbhattarai.com/case-studies",
+          }),
           breadcrumbSchema([
             { name: "Home", url: "https://nlbhattarai.com" },
             { name: "Case Studies", url: "https://nlbhattarai.com/case-studies" },

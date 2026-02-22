@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Layout from "@/components/Layout";
-import SEO, { caseStudySchema, breadcrumbSchema } from "@/components/SEO";
+import SEO, { caseStudySchema, breadcrumbSchema, webpageSchema } from "@/components/SEO";
 
 interface MetricItem {
   label: string;
@@ -120,6 +120,11 @@ const CaseStudyPage = () => {
           tags: caseStudy.tags || [],
         }}
         jsonLd={[
+          webpageSchema({
+            title: seoTitle,
+            description: seoDescription,
+            url: `https://nlbhattarai.com/case-studies/${caseStudy.slug}`,
+          }),
           caseStudySchema({
             title: seoTitle,
             description: seoDescription,

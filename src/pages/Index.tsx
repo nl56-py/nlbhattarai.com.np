@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
-import SEO, { personSchema, websiteSchema } from "@/components/SEO";
+import SEO, { personSchema, websiteSchema, webpageSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -65,7 +65,16 @@ const Index = () => {
         description="I design secure websites, custom software, and SEO-safe digital systems that turn real expertise into scalable digital authority."
         keywords="software development Nepal, digital systems architect, website and app development, SEO strategy, workflow automation, cybersecurity"
         canonical="https://nlbhattarai.com"
-        jsonLd={[personSchema(), websiteSchema()]}
+        jsonLd={[
+          personSchema(),
+          websiteSchema(),
+          webpageSchema({
+            title: "N.L. Bhattarai - Websites, Software and Digital Systems",
+            description:
+              "I design secure websites, custom software, and SEO-safe digital systems that turn real expertise into scalable digital authority.",
+            url: "https://nlbhattarai.com/",
+          }),
+        ]}
       />
       <div
         className="
