@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
-import SEO, { personSchema, breadcrumbSchema } from "@/components/SEO";
+import SEO, { personSchema, breadcrumbSchema, webpageSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const principles = [
@@ -21,6 +21,12 @@ const About = () => {
         canonical="https://nlbhattarai.com/about"
         jsonLd={[
           personSchema(),
+          webpageSchema({
+            title: "About N.L. Bhattarai - Digital Systems Engineer and SEO Strategist",
+            description:
+              "I design secure websites, software, and digital systems for organizations that depend on trust, clarity, and long-term reliability.",
+            url: "https://nlbhattarai.com/about",
+          }),
           breadcrumbSchema([
             { name: "Home", url: "https://nlbhattarai.com" },
             { name: "About", url: "https://nlbhattarai.com/about" },

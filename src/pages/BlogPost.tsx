@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import Layout from "@/components/Layout";
-import SEO, { articleSchema, breadcrumbSchema } from "@/components/SEO";
+import SEO, { articleSchema, breadcrumbSchema, webpageSchema } from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -114,6 +114,11 @@ const BlogPost = () => {
           tags: keywordTags.length > 0 ? keywordTags : [blog.category],
         }}
         jsonLd={[
+          webpageSchema({
+            title: seoTitle,
+            description: seoDescription,
+            url: `https://nlbhattarai.com/blog/${blog.slug}`,
+          }),
           articleSchema({
             title: seoTitle,
             description: seoDescription,

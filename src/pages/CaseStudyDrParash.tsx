@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
-import SEO, { breadcrumbSchema, caseStudySchema } from "@/components/SEO";
+import SEO, { breadcrumbSchema, caseStudySchema, webpageSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const CaseStudyDrParash = () => {
@@ -15,6 +15,12 @@ const CaseStudyDrParash = () => {
         ogType="article"
         ogImageAlt="Dr. Parash Mani Shrestha case study results"
         jsonLd={[
+          webpageSchema({
+            title: "Dr. Parash Mani Shrestha SEO Case Study",
+            description:
+              "How Dr. Parash Mani Shrestha grew from zero digital presence to top Google visibility through a structured healthcare SEO and web strategy.",
+            url: "https://nlbhattarai.com/case-studies/dr-parash-mani-shrestha",
+          }),
           caseStudySchema({
             title: "From Zero Digital Presence to Top Google Rankings",
             description:

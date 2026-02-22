@@ -2,7 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
-import SEO, { breadcrumbSchema } from "@/components/SEO";
+import SEO, { breadcrumbSchema, webpageSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 import { MessageCircle, Facebook, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -81,6 +81,12 @@ const Contact = () => {
         keywords="contact N.L. Bhattarai, software developer Nepal, digital systems consultant, website and app development, SEO consultant"
         canonical="https://nlbhattarai.com/contact"
         jsonLd={[
+          webpageSchema({
+            title: "Contact N.L. Bhattarai",
+            description:
+              "Get in touch to discuss websites, software, automation, or full digital systems with N.L. Bhattarai.",
+            url: "https://nlbhattarai.com/contact",
+          }),
           breadcrumbSchema([
             { name: "Home", url: "https://nlbhattarai.com" },
             { name: "Contact", url: "https://nlbhattarai.com/contact" },

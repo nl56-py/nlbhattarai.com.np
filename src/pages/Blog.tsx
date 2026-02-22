@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
-import SEO, { breadcrumbSchema } from "@/components/SEO";
+import SEO, { breadcrumbSchema, webpageSchema } from "@/components/SEO";
 import AnimatedSection from "@/components/AnimatedSection";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -45,6 +45,12 @@ const Blog = () => {
         ogImage={featuredPost?.cover_image_url || undefined}
         ogImageAlt={featuredPost?.title || "N.L. Bhattarai blog"}
         jsonLd={[
+          webpageSchema({
+            title: "Blog - Cybersecurity, Vibe Coding and SEO Insights",
+            description:
+              "Articles on cybersecurity, vibe coding, SEO, software architecture, and practical digital systems implementation.",
+            url: "https://nlbhattarai.com/blog",
+          }),
           breadcrumbSchema([
             { name: "Home", url: "https://nlbhattarai.com" },
             { name: "Blog", url: "https://nlbhattarai.com/blog" },
