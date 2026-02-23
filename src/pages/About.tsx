@@ -19,7 +19,7 @@ const About = () => {
         description="I design secure websites, software, and digital systems for organizations that depend on trust, clarity, and long-term reliability."
         keywords="about N.L. Bhattarai, digital systems engineer, software developer Nepal, SEO strategist, cybersecurity, system architecture"
         canonical="https://www.nlbhattarai.com.np/about"
-        ogImage="/og/hero-profile.png"
+        ogImage="/og/hero-share-1200x630.jpg"
         ogImageAlt="N.L. Bhattarai portrait"
         jsonLd={[
           personSchema(),

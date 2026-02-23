@@ -7,7 +7,7 @@ const SITE_URL = (
   process.env.SITE_URL?.trim() ||
   "https://www.nlbhattarai.com.np"
 ).replace(/\/+$/, "");
-const DEFAULT_IMAGE = `${SITE_URL}/og/hero-profile.png`;
+const DEFAULT_IMAGE = `${SITE_URL}/og/hero-share-1200x630.jpg`;
 
 const BRAND_KEYWORDS = [
   "N.L. Bhattarai",
@@ -239,6 +239,7 @@ const buildSeoTags = (page) => {
       <meta property="og:url" content="${escapeAttr(canonicalUrl)}" />
       <meta property="og:image" content="${escapeAttr(ogImage)}" />
       <meta property="og:image:secure_url" content="${escapeAttr(ogImage)}" />
+      <meta property="og:image:type" content="image/jpeg" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:site_name" content="${escapeAttr(SITE_NAME)}" />
