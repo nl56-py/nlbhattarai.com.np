@@ -18,7 +18,7 @@ const About = () => {
         title="About N.L. Bhattarai — Digital Systems Engineer & SEO Strategist"
         description="I design secure websites, software, and digital systems for organizations that depend on trust, clarity, and long-term reliability."
         keywords="about N.L. Bhattarai, digital systems engineer, software developer Nepal, SEO strategist, cybersecurity, system architecture"
-        canonical="https://nlbhattarai.com/about"
+        canonical="https://www.nlbhattarai.com.np/about"
         ogImage="/og/hero-profile.png"
         ogImageAlt="N.L. Bhattarai portrait"
         jsonLd={[
@@ -27,11 +27,11 @@ const About = () => {
             title: "About N.L. Bhattarai - Digital Systems Engineer and SEO Strategist",
             description:
               "I design secure websites, software, and digital systems for organizations that depend on trust, clarity, and long-term reliability.",
-            url: "https://nlbhattarai.com/about",
+            url: "https://www.nlbhattarai.com.np/about",
           }),
           breadcrumbSchema([
-            { name: "Home", url: "https://nlbhattarai.com" },
-            { name: "About", url: "https://nlbhattarai.com/about" },
+            { name: "Home", url: "https://www.nlbhattarai.com.np" },
+            { name: "About", url: "https://www.nlbhattarai.com.np/about" },
           ]),
         ]}
       />
@@ -269,4 +269,5 @@ const About = () => {
 };
 
 export default About;
+
 

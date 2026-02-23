@@ -79,7 +79,7 @@ const Contact = () => {
         title="Contact N.L. Bhattarai — Let's Build Your Digital System"
         description="Get in touch to discuss websites, software, automation, or full digital systems. I build secure, scalable solutions for long-term growth."
         keywords="contact N.L. Bhattarai, software developer Nepal, digital systems consultant, website and app development, SEO consultant"
-        canonical="https://nlbhattarai.com/contact"
+        canonical="https://www.nlbhattarai.com.np/contact"
         ogImage="/og/hero-profile.png"
         ogImageAlt="N.L. Bhattarai portrait"
         jsonLd={[
@@ -87,17 +87,17 @@ const Contact = () => {
             title: "Contact N.L. Bhattarai",
             description:
               "Get in touch to discuss websites, software, automation, or full digital systems with N.L. Bhattarai.",
-            url: "https://nlbhattarai.com/contact",
+            url: "https://www.nlbhattarai.com.np/contact",
           }),
           breadcrumbSchema([
-            { name: "Home", url: "https://nlbhattarai.com" },
-            { name: "Contact", url: "https://nlbhattarai.com/contact" },
+            { name: "Home", url: "https://www.nlbhattarai.com.np" },
+            { name: "Contact", url: "https://www.nlbhattarai.com.np/contact" },
           ]),
           {
             "@context": "https://schema.org",
             "@type": "ContactPage",
             name: "Contact N.L. Bhattarai",
-            url: "https://nlbhattarai.com/contact",
+            url: "https://www.nlbhattarai.com.np/contact",
             description: "Contact page for project inquiries and consultations.",
           },
         ]}
@@ -389,3 +389,4 @@ const Contact = () => {
 };
 
 export default Contact;
+

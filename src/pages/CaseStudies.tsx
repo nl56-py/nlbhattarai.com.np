@@ -52,7 +52,7 @@ const CaseStudies = () => {
         title="Case Studies — Real Projects, Real Results"
         description="Documented projects across websites, software, and digital systems with measurable outcomes for healthcare and business."
         keywords="case studies, software projects, digital system implementation, SEO results, product engineering portfolio"
-        canonical="https://nlbhattarai.com/case-studies"
+        canonical="https://www.nlbhattarai.com.np/case-studies"
         ogImage={featuredStudy?.cover_image_url || undefined}
         ogImageAlt={featuredStudy?.title || "N.L. Bhattarai case studies"}
         jsonLd={[
@@ -60,17 +60,17 @@ const CaseStudies = () => {
             title: "Case Studies - Real Projects, Real Results",
             description:
               "Documented projects across websites, software, and digital systems with measurable outcomes for healthcare and business.",
-            url: "https://nlbhattarai.com/case-studies",
+            url: "https://www.nlbhattarai.com.np/case-studies",
           }),
           breadcrumbSchema([
-            { name: "Home", url: "https://nlbhattarai.com" },
-            { name: "Case Studies", url: "https://nlbhattarai.com/case-studies" },
+            { name: "Home", url: "https://www.nlbhattarai.com.np" },
+            { name: "Case Studies", url: "https://www.nlbhattarai.com.np/case-studies" },
           ]),
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             name: "Case Studies",
-            url: "https://nlbhattarai.com/case-studies",
+            url: "https://www.nlbhattarai.com.np/case-studies",
             description: "Portfolio of documented website, software, and digital systems projects.",
             author: { "@type": "Person", name: "N.L. Bhattarai" },
           },
@@ -276,3 +276,4 @@ const CaseStudies = () => {
 };
 
 export default CaseStudies;
+

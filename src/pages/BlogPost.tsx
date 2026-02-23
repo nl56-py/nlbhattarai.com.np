@@ -102,7 +102,7 @@ const BlogPost = () => {
         title={seoTitle}
         description={seoDescription}
         keywords={seoKeywords}
-        canonical={`https://nlbhattarai.com/blog/${blog.slug}`}
+        canonical={`https://www.nlbhattarai.com.np/blog/${blog.slug}`}
         ogType="article"
         ogImage={ogImage}
         ogImageAlt={ogImageAlt}
@@ -117,12 +117,12 @@ const BlogPost = () => {
           webpageSchema({
             title: seoTitle,
             description: seoDescription,
-            url: `https://nlbhattarai.com/blog/${blog.slug}`,
+            url: `https://www.nlbhattarai.com.np/blog/${blog.slug}`,
           }),
           articleSchema({
             title: seoTitle,
             description: seoDescription,
-            url: `https://nlbhattarai.com/blog/${blog.slug}`,
+            url: `https://www.nlbhattarai.com.np/blog/${blog.slug}`,
             image: ogImage,
             datePublished: blog.created_at,
             dateModified: blog.updated_at || blog.created_at,
@@ -130,9 +130,9 @@ const BlogPost = () => {
             keywords: seoKeywords,
           }),
           breadcrumbSchema([
-            { name: "Home", url: "https://nlbhattarai.com" },
-            { name: "Blog", url: "https://nlbhattarai.com/blog" },
-            { name: blog.title, url: `https://nlbhattarai.com/blog/${blog.slug}` },
+            { name: "Home", url: "https://www.nlbhattarai.com.np" },
+            { name: "Blog", url: "https://www.nlbhattarai.com.np/blog" },
+            { name: blog.title, url: `https://www.nlbhattarai.com.np/blog/${blog.slug}` },
           ]),
         ]}
       />
@@ -220,3 +220,4 @@ const BlogPost = () => {
 };
 
 export default BlogPost;
+

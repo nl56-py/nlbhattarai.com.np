@@ -41,7 +41,7 @@ const Blog = () => {
         title="Blog — Cybersecurity, Vibe Coding & SEO Insights"
         description="Articles on cybersecurity, vibe coding, SEO, software architecture, and practical digital systems implementation."
         keywords="cybersecurity blog, software architecture blog, vibe coding, SEO blog, digital systems articles, N.L. Bhattarai blog"
-        canonical="https://nlbhattarai.com/blog"
+        canonical="https://www.nlbhattarai.com.np/blog"
         ogImage={featuredPost?.cover_image_url || undefined}
         ogImageAlt={featuredPost?.title || "N.L. Bhattarai blog"}
         jsonLd={[
@@ -49,17 +49,17 @@ const Blog = () => {
             title: "Blog - Cybersecurity, Vibe Coding and SEO Insights",
             description:
               "Articles on cybersecurity, vibe coding, SEO, software architecture, and practical digital systems implementation.",
-            url: "https://nlbhattarai.com/blog",
+            url: "https://www.nlbhattarai.com.np/blog",
           }),
           breadcrumbSchema([
-            { name: "Home", url: "https://nlbhattarai.com" },
-            { name: "Blog", url: "https://nlbhattarai.com/blog" },
+            { name: "Home", url: "https://www.nlbhattarai.com.np" },
+            { name: "Blog", url: "https://www.nlbhattarai.com.np/blog" },
           ]),
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             name: "Blog",
-            url: "https://nlbhattarai.com/blog",
+            url: "https://www.nlbhattarai.com.np/blog",
             description: "Articles on cybersecurity, software architecture, vibe coding, and SEO-safe digital systems.",
             author: { "@type": "Person", name: "N.L. Bhattarai" },
           },
@@ -249,3 +249,4 @@ const Blog = () => {
 };
 
 export default Blog;
+

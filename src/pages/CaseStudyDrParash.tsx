@@ -11,7 +11,7 @@ const CaseStudyDrParash = () => {
         title="Dr. Parash Mani Shrestha SEO Case Study"
         description="How Dr. Parash Mani Shrestha grew from zero digital presence to top Google visibility through a structured, trust-first healthcare SEO and web strategy."
         keywords="Dr Parash Mani Shrestha case study, healthcare SEO Nepal, doctor digital presence strategy, urologist SEO strategy, medical digital authority"
-        canonical="https://nlbhattarai.com/case-studies/dr-parash-mani-shrestha"
+        canonical="https://www.nlbhattarai.com.np/case-studies/dr-parash-mani-shrestha"
         ogType="article"
         ogImageAlt="Dr. Parash Mani Shrestha case study results"
         jsonLd={[
@@ -19,13 +19,13 @@ const CaseStudyDrParash = () => {
             title: "Dr. Parash Mani Shrestha SEO Case Study",
             description:
               "How Dr. Parash Mani Shrestha grew from zero digital presence to top Google visibility through a structured healthcare SEO and web strategy.",
-            url: "https://nlbhattarai.com/case-studies/dr-parash-mani-shrestha",
+            url: "https://www.nlbhattarai.com.np/case-studies/dr-parash-mani-shrestha",
           }),
           caseStudySchema({
             title: "From Zero Digital Presence to Top Google Rankings",
             description:
               "A healthcare SEO and web strategy case study for Dr. Parash Mani Shrestha in Nepal.",
-            url: "https://nlbhattarai.com/case-studies/dr-parash-mani-shrestha",
+            url: "https://www.nlbhattarai.com.np/case-studies/dr-parash-mani-shrestha",
             datePublished: "2026-02-08",
             clientName: "Dr. Parash Mani Shrestha",
             category: "Healthcare",
@@ -33,11 +33,11 @@ const CaseStudyDrParash = () => {
               "healthcare SEO, urologist SEO, medical digital strategy, Nepal healthcare marketing",
           }),
           breadcrumbSchema([
-            { name: "Home", url: "https://nlbhattarai.com" },
-            { name: "Case Studies", url: "https://nlbhattarai.com/case-studies" },
+            { name: "Home", url: "https://www.nlbhattarai.com.np" },
+            { name: "Case Studies", url: "https://www.nlbhattarai.com.np/case-studies" },
             {
               name: "Dr. Parash Mani Shrestha Case Study",
-              url: "https://nlbhattarai.com/case-studies/dr-parash-mani-shrestha",
+              url: "https://www.nlbhattarai.com.np/case-studies/dr-parash-mani-shrestha",
             },
           ]),
         ]}
@@ -385,3 +385,4 @@ const CaseStudyDrParash = () => {
 };
 
 export default CaseStudyDrParash;
+

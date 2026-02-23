@@ -64,7 +64,7 @@ const Index = () => {
         title="N.L. Bhattarai — Websites, Software & Digital Systems"
         description="I design secure websites, custom software, and SEO-safe digital systems that turn real expertise into scalable digital authority."
         keywords="software development Nepal, digital systems architect, website and app development, SEO strategy, workflow automation, cybersecurity"
-        canonical="https://nlbhattarai.com"
+        canonical="https://www.nlbhattarai.com.np"
         ogImage="/og/hero-profile.png"
         ogImageAlt="N.L. Bhattarai portrait"
         jsonLd={[
@@ -74,7 +74,7 @@ const Index = () => {
             title: "N.L. Bhattarai - Websites, Software and Digital Systems",
             description:
               "I design secure websites, custom software, and SEO-safe digital systems that turn real expertise into scalable digital authority.",
-            url: "https://nlbhattarai.com/",
+            url: "https://www.nlbhattarai.com.np/",
           }),
         ]}
       />
@@ -351,3 +351,4 @@ const Index = () => {
 };
 
 export default Index;
+

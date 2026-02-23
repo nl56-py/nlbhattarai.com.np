@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 
 const ENV_SITE_URL = import.meta.env.VITE_SITE_URL?.trim();
-const SITE_URL = (ENV_SITE_URL || "https://nlbhattarai.com").replace(/\/+$/, "");
+const SITE_URL = (ENV_SITE_URL || "https://www.nlbhattarai.com.np").replace(/\/+$/, "");
 const SITE_NAME = "N.L. Bhattarai";
 const DEFAULT_IMAGE = `${SITE_URL}/og/hero-profile.png`;
 
@@ -296,3 +296,4 @@ export const caseStudySchema = ({
 });
 
 export const SITE_URL_CONST = SITE_URL;
+

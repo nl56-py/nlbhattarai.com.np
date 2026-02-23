@@ -108,7 +108,7 @@ const CaseStudyPage = () => {
         title={seoTitle}
         description={seoDescription}
         keywords={seoKeywords}
-        canonical={`https://nlbhattarai.com/case-studies/${caseStudy.slug}`}
+        canonical={`https://www.nlbhattarai.com.np/case-studies/${caseStudy.slug}`}
         ogType="article"
         ogImage={ogImage}
         ogImageAlt={ogImageAlt}
@@ -123,12 +123,12 @@ const CaseStudyPage = () => {
           webpageSchema({
             title: seoTitle,
             description: seoDescription,
-            url: `https://nlbhattarai.com/case-studies/${caseStudy.slug}`,
+            url: `https://www.nlbhattarai.com.np/case-studies/${caseStudy.slug}`,
           }),
           caseStudySchema({
             title: seoTitle,
             description: seoDescription,
-            url: `https://nlbhattarai.com/case-studies/${caseStudy.slug}`,
+            url: `https://www.nlbhattarai.com.np/case-studies/${caseStudy.slug}`,
             image: ogImage,
             datePublished: caseStudy.created_at,
             clientName: caseStudy.client_name,
@@ -137,9 +137,9 @@ const CaseStudyPage = () => {
             keywords: seoKeywords,
           }),
           breadcrumbSchema([
-            { name: "Home", url: "https://nlbhattarai.com" },
-            { name: "Case Studies", url: "https://nlbhattarai.com/case-studies" },
-            { name: caseStudy.title, url: `https://nlbhattarai.com/case-studies/${caseStudy.slug}` },
+            { name: "Home", url: "https://www.nlbhattarai.com.np" },
+            { name: "Case Studies", url: "https://www.nlbhattarai.com.np/case-studies" },
+            { name: caseStudy.title, url: `https://www.nlbhattarai.com.np/case-studies/${caseStudy.slug}` },
           ]),
         ]}
       />
@@ -289,3 +289,4 @@ const CaseStudyPage = () => {
 };
 
 export default CaseStudyPage;
+

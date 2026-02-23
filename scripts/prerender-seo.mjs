@@ -5,7 +5,7 @@ const SITE_NAME = "N.L. Bhattarai";
 const SITE_URL = (
   process.env.VITE_SITE_URL?.trim() ||
   process.env.SITE_URL?.trim() ||
-  "https://nlbhattarai.com"
+  "https://www.nlbhattarai.com.np"
 ).replace(/\/+$/, "");
 const DEFAULT_IMAGE = `${SITE_URL}/og/hero-profile.png`;
 
@@ -692,3 +692,4 @@ main().catch((error) => {
   console.error(`[seo-prerender] Failed: ${error.message}`);
   process.exitCode = 1;
 });
+
