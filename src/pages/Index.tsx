@@ -65,7 +65,7 @@ const Index = () => {
         description="I design secure websites, custom software, and SEO-safe digital systems that turn real expertise into scalable digital authority."
         keywords="software development Nepal, digital systems architect, website and app development, SEO strategy, workflow automation, cybersecurity"
         canonical="https://www.nlbhattarai.com.np"
-        ogImage="/og/hero-share-1200x630.jpg"
+        ogImage="/og/hero-share-1200x630.jpg?v=20260223a"
         ogImageAlt="N.L. Bhattarai portrait"
         jsonLd={[
           personSchema(),

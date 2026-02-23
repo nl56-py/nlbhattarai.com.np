@@ -7,7 +7,8 @@ const SITE_URL = (
   process.env.SITE_URL?.trim() ||
   "https://www.nlbhattarai.com.np"
 ).replace(/\/+$/, "");
-const DEFAULT_IMAGE = `${SITE_URL}/og/hero-share-1200x630.jpg`;
+const SOCIAL_IMAGE_VERSION = "20260223a";
+const DEFAULT_IMAGE = `${SITE_URL}/og/hero-share-1200x630.jpg?v=${SOCIAL_IMAGE_VERSION}`;
 
 const BRAND_KEYWORDS = [
   "N.L. Bhattarai",
@@ -65,6 +66,23 @@ const toAbsoluteUrl = (value) => {
   if (value.startsWith("//")) return `https:${value}`;
   if (value.startsWith("/")) return `${SITE_URL}${value}`;
   return `${SITE_URL}/${value}`;
+};
+
+const appendImageVersion = (url, version) => {
+  if (!url || !version) return url;
+  const cleanVersion = String(version).slice(0, 10);
+  if (!cleanVersion) return url;
+  if (/[?&]v=/i.test(url)) return url;
+  return `${url}${url.includes("?") ? "&" : "?"}v=${encodeURIComponent(cleanVersion)}`;
+};
+
+const getImageMimeType = (url) => {
+  const pathOnly = String(url).split("?")[0].toLowerCase();
+  if (pathOnly.endsWith(".jpg") || pathOnly.endsWith(".jpeg")) return "image/jpeg";
+  if (pathOnly.endsWith(".png")) return "image/png";
+  if (pathOnly.endsWith(".webp")) return "image/webp";
+  if (pathOnly.endsWith(".gif")) return "image/gif";
+  return "";
 };
 
 const escapeHtml = (value) =>
@@ -206,7 +224,13 @@ const toTitle = (title) =>
 const buildSeoTags = (page) => {
   const title = toTitle(page.title);
   const canonicalUrl = toAbsoluteUrl(page.canonicalPath || page.route || "/");
-  const ogImage = toAbsoluteUrl(page.ogImage || DEFAULT_IMAGE);
+  const versionedImage = appendImageVersion(
+    page.ogImage || DEFAULT_IMAGE,
+    page.article?.modifiedTime || page.article?.publishedTime || page.lastModified
+  );
+  const ogImage = toAbsoluteUrl(versionedImage);
+  const ogImageMime = getImageMimeType(ogImage);
+  const hasDefaultImageDimensions = ogImage.includes("/og/hero-share-1200x630.jpg");
   const keywords = mergeKeywords(page.keywords);
   const robots = page.noindex
     ? "noindex, nofollow"
@@ -238,10 +262,11 @@ const buildSeoTags = (page) => {
       <meta property="og:type" content="${escapeAttr(page.ogType || "website")}" />
       <meta property="og:url" content="${escapeAttr(canonicalUrl)}" />
       <meta property="og:image" content="${escapeAttr(ogImage)}" />
+      <meta property="og:image:url" content="${escapeAttr(ogImage)}" />
       <meta property="og:image:secure_url" content="${escapeAttr(ogImage)}" />
-      <meta property="og:image:type" content="image/jpeg" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+      ${ogImageMime ? `<meta property="og:image:type" content="${escapeAttr(ogImageMime)}" />` : ""}
+      ${hasDefaultImageDimensions ? '<meta property="og:image:width" content="1200" />' : ""}
+      ${hasDefaultImageDimensions ? '<meta property="og:image:height" content="630" />' : ""}
       <meta property="og:site_name" content="${escapeAttr(SITE_NAME)}" />
       <meta property="og:locale" content="en_US" />
       ${page.ogImageAlt ? `<meta property="og:image:alt" content="${escapeAttr(page.ogImageAlt)}" />` : ""}
@@ -250,6 +275,7 @@ const buildSeoTags = (page) => {
       <meta name="twitter:title" content="${escapeAttr(title)}" />
       <meta name="twitter:description" content="${escapeAttr(page.description)}" />
       <meta name="twitter:image" content="${escapeAttr(ogImage)}" />
+      <meta name="twitter:image:src" content="${escapeAttr(ogImage)}" />
       ${page.ogImageAlt ? `<meta name="twitter:image:alt" content="${escapeAttr(page.ogImageAlt)}" />` : ""}
 
       ${page.article?.publishedTime ? `<meta property="article:published_time" content="${escapeAttr(page.article.publishedTime)}" />` : ""}
@@ -623,7 +649,11 @@ const buildSitemapXml = (pages) => {
     .filter((page) => !page.noindex)
     .map((page) => {
       const canonicalUrl = toAbsoluteUrl(page.canonicalPath || page.route || "/");
-      const ogImage = toAbsoluteUrl(page.ogImage || DEFAULT_IMAGE);
+      const versionedImage = appendImageVersion(
+        page.ogImage || DEFAULT_IMAGE,
+        page.article?.modifiedTime || page.article?.publishedTime || page.lastModified
+      );
+      const ogImage = toAbsoluteUrl(versionedImage);
       const lastModified = normalizeDateOnly(page.lastModified);
       const changefreq = page.changefreq || "weekly";
       const priority = page.priority || "0.7";

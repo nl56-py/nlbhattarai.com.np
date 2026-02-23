@@ -3,7 +3,8 @@ import { Helmet } from "react-helmet-async";
 const ENV_SITE_URL = import.meta.env.VITE_SITE_URL?.trim();
 const SITE_URL = (ENV_SITE_URL || "https://www.nlbhattarai.com.np").replace(/\/+$/, "");
 const SITE_NAME = "N.L. Bhattarai";
-const DEFAULT_IMAGE = `${SITE_URL}/og/hero-share-1200x630.jpg`;
+const SOCIAL_IMAGE_VERSION = "20260223a";
+const DEFAULT_IMAGE = `${SITE_URL}/og/hero-share-1200x630.jpg?v=${SOCIAL_IMAGE_VERSION}`;
 
 const BRAND_KEYWORD_LIST = [
   "N.L. Bhattarai",
@@ -51,6 +52,24 @@ export const toAbsoluteUrl = (value: string) => {
   return `${SITE_URL}/${value}`;
 };
 
+const appendImageVersion = (url: string, version?: string) => {
+  if (!version || !url) return url;
+  const cleanVersion = version.slice(0, 10);
+  const hasQuery = url.includes("?");
+  const hasVersion = /[?&]v=/i.test(url);
+  if (hasVersion) return url;
+  return `${url}${hasQuery ? "&" : "?"}v=${encodeURIComponent(cleanVersion)}`;
+};
+
+const getImageMimeType = (url: string) => {
+  const path = url.split("?")[0].toLowerCase();
+  if (path.endsWith(".jpg") || path.endsWith(".jpeg")) return "image/jpeg";
+  if (path.endsWith(".png")) return "image/png";
+  if (path.endsWith(".webp")) return "image/webp";
+  if (path.endsWith(".gif")) return "image/gif";
+  return undefined;
+};
+
 const toFullTitle = (title: string) => {
   if (title.toLowerCase().includes(SITE_NAME.toLowerCase())) return title;
   return `${title} - ${SITE_NAME}`;
@@ -89,7 +108,13 @@ const SEO = ({
 }: SEOProps) => {
   const fullTitle = toFullTitle(title);
   const canonicalUrl = canonical ? toAbsoluteUrl(canonical) : SITE_URL;
-  const imageUrl = toAbsoluteUrl(ogImage || DEFAULT_IMAGE);
+  const versionedOgImage = appendImageVersion(
+    ogImage || DEFAULT_IMAGE,
+    article?.modifiedTime || article?.publishedTime
+  );
+  const imageUrl = toAbsoluteUrl(versionedOgImage);
+  const imageType = getImageMimeType(imageUrl);
+  const hasDefaultImageDimensions = imageUrl.includes("/og/hero-share-1200x630.jpg");
   const mergedKeywords = mergeKeywords(keywords);
   const robots = noindex
     ? "noindex, nofollow"
@@ -112,10 +137,11 @@ const SEO = ({
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:image" content={imageUrl} />
+      <meta property="og:image:url" content={imageUrl} />
       <meta property="og:image:secure_url" content={imageUrl} />
-      <meta property="og:image:type" content="image/jpeg" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+      {imageType && <meta property="og:image:type" content={imageType} />}
+      {hasDefaultImageDimensions && <meta property="og:image:width" content="1200" />}
+      {hasDefaultImageDimensions && <meta property="og:image:height" content="630" />}
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="en_US" />
       {ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
@@ -139,6 +165,7 @@ const SEO = ({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />
+      <meta name="twitter:image:src" content={imageUrl} />
       {ogImageAlt && <meta name="twitter:image:alt" content={ogImageAlt} />}
 
       {jsonLdArray.map((schema, index) => (

@@ -80,7 +80,7 @@ const Contact = () => {
         description="Get in touch to discuss websites, software, automation, or full digital systems. I build secure, scalable solutions for long-term growth."
         keywords="contact N.L. Bhattarai, software developer Nepal, digital systems consultant, website and app development, SEO consultant"
         canonical="https://www.nlbhattarai.com.np/contact"
-        ogImage="/og/hero-share-1200x630.jpg"
+        ogImage="/og/hero-share-1200x630.jpg?v=20260223a"
         ogImageAlt="N.L. Bhattarai portrait"
         jsonLd={[
           webpageSchema({
