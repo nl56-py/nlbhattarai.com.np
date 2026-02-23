@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 const ENV_SITE_URL = import.meta.env.VITE_SITE_URL?.trim();
 const SITE_URL = (ENV_SITE_URL || "https://nlbhattarai.com").replace(/\/+$/, "");
 const SITE_NAME = "N.L. Bhattarai";
-const DEFAULT_IMAGE = `${SITE_URL}/favicon.ico`;
+const DEFAULT_IMAGE = `${SITE_URL}/og/hero-profile.png`;
 
 const BRAND_KEYWORD_LIST = [
   "N.L. Bhattarai",

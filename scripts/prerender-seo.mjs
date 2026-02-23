@@ -7,7 +7,7 @@ const SITE_URL = (
   process.env.SITE_URL?.trim() ||
   "https://nlbhattarai.com"
 ).replace(/\/+$/, "");
-const DEFAULT_IMAGE = `${SITE_URL}/favicon.ico`;
+const DEFAULT_IMAGE = `${SITE_URL}/og/hero-profile.png`;
 
 const BRAND_KEYWORDS = [
   "N.L. Bhattarai",
@@ -34,6 +34,7 @@ const SUPABASE_URL =
   envSupabaseUrl ||
   (envSupabaseProjectId ? `https://${envSupabaseProjectId}.supabase.co` : "");
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim() || "";
+const HAS_SUPABASE_SEO_ENV = Boolean(SUPABASE_URL && SUPABASE_KEY);
 
 const normalizeKeyword = (value) => value.trim().toLowerCase();
 
@@ -297,7 +298,7 @@ const routeToFilePath = (route) => {
 const ensureArray = (value) => (Array.isArray(value) ? value : []);
 
 const fetchPublishedRows = async (table, select) => {
-  if (!SUPABASE_URL || !SUPABASE_KEY) {
+  if (!HAS_SUPABASE_SEO_ENV) {
     return [];
   }
 
@@ -621,15 +622,16 @@ const buildSitemapXml = (pages) => {
     .filter((page) => !page.noindex)
     .map((page) => {
       const canonicalUrl = toAbsoluteUrl(page.canonicalPath || page.route || "/");
+      const ogImage = toAbsoluteUrl(page.ogImage || DEFAULT_IMAGE);
       const lastModified = normalizeDateOnly(page.lastModified);
       const changefreq = page.changefreq || "weekly";
       const priority = page.priority || "0.7";
 
-      return `  <url>\n    <loc>${escapeHtml(canonicalUrl)}</loc>\n    <lastmod>${lastModified}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+      return `  <url>\n    <loc>${escapeHtml(canonicalUrl)}</loc>\n    <lastmod>${lastModified}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n    <image:image>\n      <image:loc>${escapeHtml(ogImage)}</image:loc>\n    </image:image>\n  </url>`;
     })
     .join("\n");
 
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls}\n</urlset>\n`;
 };
 
 const writeSitemap = async (pages) => {
@@ -654,6 +656,11 @@ const main = async () => {
   }
 
   const staticPages = buildStaticPages();
+  if (!HAS_SUPABASE_SEO_ENV) {
+    console.warn(
+      "[seo-prerender] Supabase env is missing. Dynamic blog/case-study meta pages and sitemap image URLs were skipped."
+    );
+  }
   const [blogs, caseStudies] = await Promise.all([
     fetchPublishedRows(
       "blogs",
