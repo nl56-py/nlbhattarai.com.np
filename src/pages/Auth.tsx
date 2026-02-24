@@ -182,9 +182,7 @@ const Auth = () => {
             onClick={() => setIsLogin(!isLogin)}
             className="text-sm text-muted-foreground hover:text-primary transition-colors"
           >
-            {isLogin
-              ? "Don't have an account? Sign up"
-              : "Already have an account? Sign in"}
+            
           </button>
         </div>
       </motion.div>
