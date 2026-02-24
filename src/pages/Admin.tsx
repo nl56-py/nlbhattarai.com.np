@@ -301,6 +301,11 @@ const Admin = () => {
     navigate("/");
   };
 
+  const handleDeniedSignOut = async () => {
+    await signOut();
+    navigate("/auth");
+  };
+
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -317,7 +322,10 @@ const Admin = () => {
           <p className="text-muted-foreground mb-6">
             You don't have permission to access the admin panel.
           </p>
-          <Button onClick={() => navigate("/")}>Go Home</Button>
+          <div className="flex items-center justify-center gap-3">
+            <Button variant="outline" onClick={handleDeniedSignOut}>Sign Out</Button>
+            <Button onClick={() => navigate("/")}>Go Home</Button>
+          </div>
         </div>
       </div>
     );

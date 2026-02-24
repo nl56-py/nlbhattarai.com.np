@@ -17,23 +17,47 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const checkAdminRole = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error checking admin role:", error);
+      return false;
+    }
+
+    return !!data;
+  };
+
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session) {
-          navigate("/admin");
-        }
-      }
-    );
+    const handleExistingSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
+      if (!session?.user) return;
+
+      const isAdmin = await checkAdminRole(session.user.id);
+
+      if (isAdmin) {
         navigate("/admin");
+        return;
       }
-    });
 
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+      await supabase.auth.signOut();
+      toast({
+        title: "Admin access required",
+        description: "Please sign in with an admin account.",
+        variant: "destructive",
+      });
+    };
+
+    void handleExistingSession();
+  }, [navigate, toast]);
 
   const validateForm = () => {
     if (!email || !email.includes("@")) {
@@ -63,15 +87,28 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
         if (error) throw error;
+
+        const signedInUser = data.user;
+        if (!signedInUser) {
+          throw new Error("Unable to identify signed in user.");
+        }
+
+        const isAdmin = await checkAdminRole(signedInUser.id);
+        if (!isAdmin) {
+          await supabase.auth.signOut();
+          throw new Error("This account is not assigned admin access.");
+        }
+
         toast({
           title: "Welcome back!",
           description: "You have successfully signed in.",
         });
+        navigate("/admin");
       } else {
         const { error } = await supabase.auth.signUp({
           email,
