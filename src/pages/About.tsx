@@ -19,7 +19,7 @@ const About = () => {
         description="I design secure websites, software, and digital systems for organizations that depend on trust, clarity, and long-term reliability."
         keywords="about N.L. Bhattarai, digital systems engineer, software developer Nepal, SEO strategist, cybersecurity, system architecture"
         canonical="https://www.nlbhattarai.com.np/about"
-        ogImage="/og/hero-share-1200x630.jpg?v=20260223a"
+        ogImage="https://www.nlbhattarai.com.np/og/hero-share-1200x630.jpg?v=20260223a"
         ogImageAlt="N.L. Bhattarai portrait"
         jsonLd={[
           personSchema(),
@@ -66,6 +66,10 @@ const About = () => {
                 I build secure websites, custom software, and digital systems for
                 people and organizations who rely on trust. My focus is long-term
                 digital reliability with clear structure and clean execution.
+              </p>
+              <p className="text-muted-foreground mt-3 leading-relaxed">
+                My full name is Nim Lal Bhattarai, and I am also referred to as Nim
+                Bhattarai in many project and search contexts.
               </p>
 
               {/* Strategic add: writing + vibe coding + security */}

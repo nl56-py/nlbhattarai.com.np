@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { resolveSeoImageUrl } from "@/lib/seo";
 
 const ENV_SITE_URL = import.meta.env.VITE_SITE_URL?.trim();
 const SITE_URL = (ENV_SITE_URL || "https://www.nlbhattarai.com.np").replace(/\/+$/, "");
@@ -108,11 +109,12 @@ const SEO = ({
 }: SEOProps) => {
   const fullTitle = toFullTitle(title);
   const canonicalUrl = canonical ? toAbsoluteUrl(canonical) : SITE_URL;
+  const normalizedOgImage = resolveSeoImageUrl(ogImage, DEFAULT_IMAGE) || DEFAULT_IMAGE;
   const versionedOgImage = appendImageVersion(
-    ogImage || DEFAULT_IMAGE,
+    normalizedOgImage,
     article?.modifiedTime || article?.publishedTime
   );
-  const imageUrl = toAbsoluteUrl(versionedOgImage);
+  const imageUrl = resolveSeoImageUrl(versionedOgImage, DEFAULT_IMAGE) || DEFAULT_IMAGE;
   const imageType = getImageMimeType(imageUrl);
   const hasDefaultImageDimensions = imageUrl.includes("/og/hero-share-1200x630.jpg");
   const mergedKeywords = mergeKeywords(keywords);
@@ -276,7 +278,7 @@ export const articleSchema = ({
   headline: title,
   description,
   url: toAbsoluteUrl(url),
-  image: toAbsoluteUrl(image || DEFAULT_IMAGE),
+  image: resolveSeoImageUrl(image, DEFAULT_IMAGE) || DEFAULT_IMAGE,
   datePublished,
   dateModified: dateModified || datePublished,
   inLanguage: "en",
@@ -313,7 +315,7 @@ export const caseStudySchema = ({
   name: title,
   description,
   url: toAbsoluteUrl(url),
-  image: toAbsoluteUrl(image || DEFAULT_IMAGE),
+  image: resolveSeoImageUrl(image, DEFAULT_IMAGE) || DEFAULT_IMAGE,
   datePublished,
   dateModified: dateModified || datePublished,
   inLanguage: "en",

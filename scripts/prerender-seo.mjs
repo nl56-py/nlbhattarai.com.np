@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { resolveSeoImageUrl } from "../api/seo-utils.js";
 
 const SITE_NAME = "N.L. Bhattarai";
 const SITE_URL = (
@@ -224,11 +225,12 @@ const toTitle = (title) =>
 const buildSeoTags = (page) => {
   const title = toTitle(page.title);
   const canonicalUrl = toAbsoluteUrl(page.canonicalPath || page.route || "/");
+  const normalizedOgImage = resolveSeoImageUrl(page.ogImage, DEFAULT_IMAGE) || DEFAULT_IMAGE;
   const versionedImage = appendImageVersion(
-    page.ogImage || DEFAULT_IMAGE,
+    normalizedOgImage,
     page.article?.modifiedTime || page.article?.publishedTime || page.lastModified
   );
-  const ogImage = toAbsoluteUrl(versionedImage);
+  const ogImage = resolveSeoImageUrl(versionedImage, DEFAULT_IMAGE) || DEFAULT_IMAGE;
   const ogImageMime = getImageMimeType(ogImage);
   const hasDefaultImageDimensions = ogImage.includes("/og/hero-share-1200x630.jpg");
   const keywords = mergeKeywords(page.keywords);
@@ -524,7 +526,8 @@ const buildBlogPages = (blogs) =>
         blog.seo_keywords?.trim() || `${blog.category}, blog, ${blog.title}`;
       const route = `/blog/${blog.slug}`;
       const canonicalUrl = toAbsoluteUrl(route);
-      const ogImage = blog.og_image_url || blog.cover_image_url || DEFAULT_IMAGE;
+      const ogImage =
+        resolveSeoImageUrl(blog.og_image_url, blog.cover_image_url, DEFAULT_IMAGE) || DEFAULT_IMAGE;
       const keywordTags = splitKeywords(seoKeywords);
 
       return {
@@ -580,7 +583,9 @@ const buildCaseStudyPages = (caseStudies) =>
         `case study, ${caseStudy.category}, ${caseStudy.client_name}`;
       const route = `/case-studies/${caseStudy.slug}`;
       const canonicalUrl = toAbsoluteUrl(route);
-      const ogImage = caseStudy.og_image_url || caseStudy.cover_image_url || DEFAULT_IMAGE;
+      const ogImage =
+        resolveSeoImageUrl(caseStudy.og_image_url, caseStudy.cover_image_url, DEFAULT_IMAGE) ||
+        DEFAULT_IMAGE;
       const keywordTags = splitKeywords(seoKeywords);
       const tagList = ensureArray(caseStudy.tags).filter(Boolean);
 
@@ -649,11 +654,12 @@ const buildSitemapXml = (pages) => {
     .filter((page) => !page.noindex)
     .map((page) => {
       const canonicalUrl = toAbsoluteUrl(page.canonicalPath || page.route || "/");
+      const normalizedPageImage = resolveSeoImageUrl(page.ogImage, DEFAULT_IMAGE) || DEFAULT_IMAGE;
       const versionedImage = appendImageVersion(
-        page.ogImage || DEFAULT_IMAGE,
+        normalizedPageImage,
         page.article?.modifiedTime || page.article?.publishedTime || page.lastModified
       );
-      const ogImage = toAbsoluteUrl(versionedImage);
+      const ogImage = resolveSeoImageUrl(versionedImage, DEFAULT_IMAGE) || DEFAULT_IMAGE;
       const lastModified = normalizeDateOnly(page.lastModified);
       const changefreq = page.changefreq || "weekly";
       const priority = page.priority || "0.7";

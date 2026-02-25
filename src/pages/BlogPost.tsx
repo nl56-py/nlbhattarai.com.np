@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import SEO, { articleSchema, breadcrumbSchema, webpageSchema } from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { resolveSeoImageUrl } from "@/lib/seo";
 
 interface Blog {
   id: string;
@@ -89,7 +90,7 @@ const BlogPost = () => {
   const seoKeywords =
     blog.seo_keywords?.trim() ||
     `${blog.category}, blog, N.L. Bhattarai, ${blog.title}`;
-  const ogImage = blog.og_image_url || blog.cover_image_url || undefined;
+  const ogImage = resolveSeoImageUrl(blog.og_image_url, blog.cover_image_url);
   const ogImageAlt = blog.og_image_alt || blog.title;
   const keywordTags = seoKeywords
     .split(",")

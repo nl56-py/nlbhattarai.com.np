@@ -65,7 +65,7 @@ const Index = () => {
         description="I design secure websites, custom software, and SEO-safe digital systems that turn real expertise into scalable digital authority."
         keywords="software development Nepal, digital systems architect, website and app development, SEO strategy, workflow automation, cybersecurity"
         canonical="https://www.nlbhattarai.com.np"
-        ogImage="/og/hero-share-1200x630.jpg?v=20260223a"
+        ogImage="https://www.nlbhattarai.com.np/og/hero-share-1200x630.jpg?v=20260223a"
         ogImageAlt="N.L. Bhattarai portrait"
         jsonLd={[
           personSchema(),
@@ -124,6 +124,14 @@ const Index = () => {
                   automation, and integrated digital platforms for healthcare,
                   education, and growing businesses. The goal is long-term,
                   secure systems that scale with your operations.
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.25 }}
+                  className="mt-4 text-muted-foreground leading-relaxed"
+                >
+                  I am Nim Lal Bhattarai, and some people know me as Nim Bhattarai.
                 </motion.p>
 
                 <motion.div

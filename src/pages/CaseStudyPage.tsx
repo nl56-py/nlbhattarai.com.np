@@ -5,6 +5,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Layout from "@/components/Layout";
 import SEO, { caseStudySchema, breadcrumbSchema, webpageSchema } from "@/components/SEO";
+import { resolveSeoImageUrl } from "@/lib/seo";
 
 interface MetricItem {
   label: string;
@@ -99,7 +100,7 @@ const CaseStudyPage = () => {
   const seoKeywords =
     caseStudy.seo_keywords?.trim() ||
     `case study, ${caseStudy.category}, ${caseStudy.client_name}, ${(caseStudy.tags || []).join(", ")}`;
-  const ogImage = caseStudy.og_image_url || caseStudy.cover_image_url || undefined;
+  const ogImage = resolveSeoImageUrl(caseStudy.og_image_url, caseStudy.cover_image_url);
   const ogImageAlt = caseStudy.og_image_alt || caseStudy.title;
 
   return (

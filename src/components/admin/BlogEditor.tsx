@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ADMIN_WRITES_LOCK_REASON } from "@/lib/maintenance";
+import { sanitizeAbsoluteHttpUrl } from "@/lib/seo";
 
 interface Blog {
   id: string;
@@ -173,6 +174,14 @@ const BlogEditor = ({
         }
       }
 
+      const normalizedOgImageUrl = ogImageUrl.trim()
+        ? sanitizeAbsoluteHttpUrl(ogImageUrl)
+        : null;
+
+      if (ogImageUrl.trim() && !normalizedOgImageUrl) {
+        throw new Error("Open Graph image URL must be an absolute http/https URL.");
+      }
+
       const blogData = {
         title,
         slug,
@@ -180,7 +189,7 @@ const BlogEditor = ({
         seo_title: seoTitle.trim() || null,
         seo_description: seoDescription.trim() || null,
         seo_keywords: seoKeywords.trim() || null,
-        og_image_url: ogImageUrl.trim() || null,
+        og_image_url: normalizedOgImageUrl,
         og_image_alt: ogImageAlt.trim() || null,
         content,
         category,

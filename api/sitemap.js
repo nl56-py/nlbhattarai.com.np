@@ -1,3 +1,5 @@
+import { resolveSeoImageUrl } from "./seo-utils.js";
+
 const SITE_URL = (
   process.env.VITE_SITE_URL?.trim() ||
   process.env.SITE_URL?.trim() ||
@@ -128,7 +130,8 @@ const buildBlogPages = (blogs) =>
     .map((blog) => ({
       route: `/blog/${blog.slug}`,
       canonicalPath: `/blog/${blog.slug}`,
-      ogImage: blog.og_image_url || blog.cover_image_url || DEFAULT_IMAGE,
+      ogImage:
+        resolveSeoImageUrl(blog.og_image_url, blog.cover_image_url, DEFAULT_IMAGE) || DEFAULT_IMAGE,
       lastModified: normalizeDateOnly(blog.updated_at || blog.created_at),
       changefreq: "monthly",
       priority: "0.8",
@@ -140,7 +143,9 @@ const buildCaseStudyPages = (caseStudies) =>
     .map((caseStudy) => ({
       route: `/case-studies/${caseStudy.slug}`,
       canonicalPath: `/case-studies/${caseStudy.slug}`,
-      ogImage: caseStudy.og_image_url || caseStudy.cover_image_url || DEFAULT_IMAGE,
+      ogImage:
+        resolveSeoImageUrl(caseStudy.og_image_url, caseStudy.cover_image_url, DEFAULT_IMAGE) ||
+        DEFAULT_IMAGE,
       lastModified: normalizeDateOnly(caseStudy.updated_at || caseStudy.created_at),
       changefreq: "monthly",
       priority: "0.8",
@@ -163,7 +168,8 @@ const buildSitemapXml = (pages) => {
   const urls = pages
     .map((page) => {
       const canonicalUrl = toAbsoluteUrl(page.canonicalPath || page.route || "/");
-      const imageUrl = toAbsoluteUrl(page.ogImage || DEFAULT_IMAGE);
+      const imageUrl =
+        resolveSeoImageUrl(page.ogImage, DEFAULT_IMAGE) || DEFAULT_IMAGE;
       const lastModified = normalizeDateOnly(page.lastModified);
       const changefreq = page.changefreq || "weekly";
       const priority = page.priority || "0.7";
