@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { ADMIN_WRITES_LOCK_REASON } from "@/lib/maintenance";
 import { sanitizeAbsoluteHttpUrl } from "@/lib/seo";
+import { normalizeOgImageFile, OG_IMAGE_RULE_TEXT } from "@/lib/ogImage";
 
 interface Blog {
   id: string;
@@ -86,7 +87,10 @@ const BlogEditor = ({
   const [published, setPublished] = useState(false);
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [coverImageUrl, setCoverImageUrl] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
+  const [ogImageFile, setOgImageFile] = useState<File | null>(null);
+  const [ogImagePreviewUrl, setOgImagePreviewUrl] = useState<string | null>(null);
+  const [isUploadingCoverImage, setIsUploadingCoverImage] = useState(false);
+  const [isUploadingOgImage, setIsUploadingOgImage] = useState(false);
 
   useEffect(() => {
     if (blog) {
@@ -102,10 +106,20 @@ const BlogEditor = ({
       setCategory(blog.category);
       setPublished(blog.published);
       setCoverImageUrl(blog.cover_image_url);
+      setOgImageFile(null);
+      setOgImagePreviewUrl(null);
     } else {
       resetForm();
     }
   }, [blog]);
+
+  useEffect(() => {
+    return () => {
+      if (ogImagePreviewUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(ogImagePreviewUrl);
+      }
+    };
+  }, [ogImagePreviewUrl]);
 
   const resetForm = () => {
     setTitle("");
@@ -121,6 +135,11 @@ const BlogEditor = ({
     setPublished(false);
     setCoverImage(null);
     setCoverImageUrl(null);
+    setOgImageFile(null);
+    if (ogImagePreviewUrl?.startsWith("blob:")) {
+      URL.revokeObjectURL(ogImagePreviewUrl);
+    }
+    setOgImagePreviewUrl(null);
   };
 
   const generateSlug = (text: string) => {
@@ -155,6 +174,28 @@ const BlogEditor = ({
     return data.publicUrl;
   };
 
+  const uploadOgImage = async (file: File): Promise<string> => {
+    const normalizedOgImage = await normalizeOgImageFile(file);
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
+    const filePath = `og/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("blog-images")
+      .upload(filePath, normalizedOgImage, {
+        cacheControl: "3600",
+        contentType: "image/jpeg",
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error("OG upload error:", uploadError);
+      throw uploadError;
+    }
+
+    const { data } = supabase.storage.from("blog-images").getPublicUrl(filePath);
+    return data.publicUrl;
+  };
+
   const saveMutation = useMutation({
     mutationFn: async () => {
       if (writesLocked) {
@@ -162,24 +203,34 @@ const BlogEditor = ({
       }
 
       let imageUrl = coverImageUrl;
+      let normalizedOgImageUrl: string | null = ogImageUrl.trim()
+        ? sanitizeAbsoluteHttpUrl(ogImageUrl)
+        : null;
 
       if (coverImage) {
-        setIsUploading(true);
+        setIsUploadingCoverImage(true);
         try {
           imageUrl = await uploadImage(coverImage);
         } catch (error) {
           throw new Error("Failed to upload image");
         } finally {
-          setIsUploading(false);
+          setIsUploadingCoverImage(false);
         }
       }
 
-      const normalizedOgImageUrl = ogImageUrl.trim()
-        ? sanitizeAbsoluteHttpUrl(ogImageUrl)
-        : null;
-
-      if (ogImageUrl.trim() && !normalizedOgImageUrl) {
+      if (ogImageUrl.trim() && !normalizedOgImageUrl && !ogImageFile) {
         throw new Error("Open Graph image URL must be an absolute http/https URL.");
+      }
+
+      if (ogImageFile) {
+        setIsUploadingOgImage(true);
+        try {
+          normalizedOgImageUrl = await uploadOgImage(ogImageFile);
+        } catch (error) {
+          throw new Error("Failed to upload Open Graph image.");
+        } finally {
+          setIsUploadingOgImage(false);
+        }
       }
 
       const blogData = {
@@ -241,10 +292,45 @@ const BlogEditor = ({
     }
   };
 
+  const handleOgImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "OG image must be less than 10MB before processing.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    setOgImagePreviewUrl((prev) => {
+      if (prev?.startsWith("blob:")) URL.revokeObjectURL(prev);
+      return previewUrl;
+    });
+    setOgImageFile(file);
+  };
+
   const removeImage = () => {
     setCoverImage(null);
     setCoverImageUrl(null);
   };
+
+  const removeOgImage = () => {
+    const hadSelectedFile = Boolean(ogImageFile);
+    setOgImageFile(null);
+    if (!hadSelectedFile) {
+      setOgImageUrl("");
+    }
+    setOgImagePreviewUrl((prev) => {
+      if (prev?.startsWith("blob:")) URL.revokeObjectURL(prev);
+      return null;
+    });
+  };
+
+  const ogImagePreviewSrc = ogImagePreviewUrl || sanitizeAbsoluteHttpUrl(ogImageUrl);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -374,6 +460,50 @@ const BlogEditor = ({
               </p>
             </div>
             <div className="space-y-2">
+              <Label>Open Graph Image Upload (optional)</Label>
+              {ogImagePreviewSrc ? (
+                <div className="relative inline-block">
+                  <img
+                    src={ogImagePreviewSrc}
+                    alt="Open Graph preview"
+                    className="w-full max-w-md h-44 object-cover rounded-lg border border-border"
+                  />
+                  <button
+                    type="button"
+                    onClick={removeOgImage}
+                    disabled={writesLocked}
+                    className="absolute top-2 right-2 p-1 bg-background/80 rounded-full hover:bg-background transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <label
+                  className={`flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-border rounded-lg transition-colors ${
+                    writesLocked
+                      ? "cursor-not-allowed opacity-60"
+                      : "cursor-pointer hover:border-primary/50"
+                  }`}
+                >
+                  <Upload className="w-6 h-6 text-muted-foreground mb-2" />
+                  <span className="text-sm text-muted-foreground">
+                    Upload Open Graph image
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleOgImageChange}
+                    disabled={writesLocked}
+                    className="hidden"
+                  />
+                </label>
+              )}
+              <p className="text-xs text-muted-foreground">
+                {OG_IMAGE_RULE_TEXT} This only updates social preview metadata and
+                does not change the blog cover image.
+              </p>
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="ogImageAlt">Open Graph Image Alt Text</Label>
               <Input
                 id="ogImageAlt"
@@ -454,9 +584,14 @@ const BlogEditor = ({
             </Button>
             <Button
               type="submit"
-              disabled={writesLocked || saveMutation.isPending || isUploading}
+              disabled={
+                writesLocked ||
+                saveMutation.isPending ||
+                isUploadingCoverImage ||
+                isUploadingOgImage
+              }
             >
-              {saveMutation.isPending || isUploading ? (
+              {saveMutation.isPending || isUploadingCoverImage || isUploadingOgImage ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Saving...
