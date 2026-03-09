@@ -44,12 +44,11 @@ const CaseStudies = () => {
   });
 
   const featuredStudy = caseStudies?.find((cs) => cs.featured);
-  const otherStudies = caseStudies?.filter((cs) => cs.id !== featuredStudy?.id) || [];
 
   return (
     <Layout>
       <SEO
-        title="Case Studies — Real Projects, Real Results"
+        title="Case Studies - Real Projects, Real Results"
         description="Documented projects across websites, software, and digital systems with measurable outcomes for healthcare and business."
         keywords="case studies, software projects, digital system implementation, SEO results, product engineering portfolio"
         canonical="https://www.nlbhattarai.com.np/case-studies"
@@ -91,16 +90,12 @@ const CaseStudies = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <p className="text-primary font-medium mb-3 tracking-wide text-sm uppercase">
-                Portfolio
-              </p>
+              <p className="text-primary font-medium mb-3 tracking-wide text-sm uppercase">Portfolio</p>
               <h1 className="text-foreground mb-4">Case Studies</h1>
 
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Documented projects focused on long-term authority,
-                secure foundations, and measurable outcomes.
-                Only published case studies from the admin panel
-                are displayed here.
+                Documented projects focused on long-term authority, secure foundations, and measurable
+                outcomes. Only published case studies from the admin panel are displayed here.
               </p>
             </motion.div>
           </div>
@@ -119,133 +114,64 @@ const CaseStudies = () => {
             </div>
           </section>
         ) : caseStudies && caseStudies.length > 0 ? (
-          <>
-            {/* ===== FEATURED ===== */}
-            {featuredStudy && (
-              <section className="section-sm">
-                <div className="container-narrow">
-                  <AnimatedSection>
+          <section className="section-sm">
+            <div className="container-wide">
+              <AnimatedSection>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {caseStudies.map((cs) => (
                     <Link
-                      to={`/case-studies/${featuredStudy.slug}`}
-                      className="block card-elevated p-8 group"
+                      key={cs.id}
+                      to={`/case-studies/${cs.slug}`}
+                      className="card-elevated p-6 group"
                     >
-                      {featuredStudy.cover_image_url && (
-                        <div className="mb-5 rounded-lg overflow-hidden">
+                      {cs.cover_image_url && (
+                        <div className="mb-4 rounded-lg overflow-hidden">
                           <img
-                            src={featuredStudy.cover_image_url}
-                            alt={featuredStudy.title}
-                            className="w-full h-56 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105"
+                            src={cs.cover_image_url}
+                            alt={cs.title}
+                            className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
                             loading="lazy"
                           />
                         </div>
                       )}
 
-                      <div className="flex items-center gap-3 mb-4">
-                        <span className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
-                          Featured
-                        </span>
-                        <span className="px-3 py-1 text-xs bg-accent text-muted-foreground rounded-full">
-                          {featuredStudy.category}
+                      <div className="mb-3 flex flex-wrap items-center gap-2">
+                        {cs.featured && (
+                          <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">
+                            Featured
+                          </span>
+                        )}
+                        <span className="text-xs bg-accent px-3 py-1 rounded-full text-muted-foreground">
+                          {cs.category}
                         </span>
                       </div>
 
-                      <h2 className="text-foreground text-2xl font-semibold mb-3 group-hover:text-primary transition-colors">
-                        {featuredStudy.title}
-                      </h2>
+                      <h3 className="text-foreground mb-2 font-semibold group-hover:text-primary transition-colors">
+                        {cs.title}
+                      </h3>
 
-                      <p className="text-muted-foreground font-medium mb-3">
-                        {featuredStudy.client_name}
-                        {featuredStudy.client_title && ` — ${featuredStudy.client_title}`}
+                      <p className="text-muted-foreground text-sm mb-3">
+                        {cs.client_name}
+                        {cs.client_title && ` - ${cs.client_title}`}
                       </p>
 
-                      {featuredStudy.description && (
-                        <p className="text-muted-foreground mb-6 leading-relaxed">
-                          {featuredStudy.description}
+                      {cs.description && (
+                        <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">
+                          {cs.description}
                         </p>
                       )}
 
-                      {featuredStudy.metrics?.items?.length > 0 && (
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 border-t pt-5">
-                          {featuredStudy.metrics.items.map((metric, index) => (
-                            <div key={index}>
-                              <p className="text-2xl font-semibold text-primary">
-                                {metric.value}
-                              </p>
-                              <p className="text-xs uppercase text-muted-foreground tracking-wide">
-                                {metric.label}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      <div className="mt-6 text-primary font-medium flex items-center gap-2">
-                        Read full study →
-                      </div>
+                      <span className="text-primary text-sm font-medium">View case study {"->"}</span>
                     </Link>
-                  </AnimatedSection>
+                  ))}
                 </div>
-              </section>
-            )}
-
-            {/* ===== OTHER STUDIES GRID ===== */}
-            {otherStudies.length > 0 && (
-              <section className="section-sm">
-                <div className="container-wide">
-                  <AnimatedSection>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {otherStudies.map((cs) => (
-                        <Link
-                          key={cs.id}
-                          to={`/case-studies/${cs.slug}`}
-                          className="card-elevated p-6 group"
-                        >
-                          {cs.cover_image_url && (
-                            <div className="mb-4 rounded-lg overflow-hidden">
-                              <img
-                                src={cs.cover_image_url}
-                                alt={cs.title}
-                                className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
-                                loading="lazy"
-                              />
-                            </div>
-                          )}
-
-                          <span className="text-xs bg-accent px-3 py-1 rounded-full text-muted-foreground">
-                            {cs.category}
-                          </span>
-
-                          <h3 className="text-foreground mt-4 mb-2 font-semibold group-hover:text-primary transition-colors">
-                            {cs.title}
-                          </h3>
-
-                          <p className="text-muted-foreground text-sm mb-3">
-                            {cs.client_name}
-                          </p>
-
-                          {cs.description && (
-                            <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">
-                              {cs.description}
-                            </p>
-                          )}
-
-                          <span className="text-primary text-sm font-medium">
-                            View case study →
-                          </span>
-                        </Link>
-                      ))}
-                    </div>
-                  </AnimatedSection>
-                </div>
-              </section>
-            )}
-          </>
+              </AnimatedSection>
+            </div>
+          </section>
         ) : (
           <section className="section-sm">
             <div className="container-narrow text-center">
-              <p className="text-muted-foreground">
-                No published case studies yet.
-              </p>
+              <p className="text-muted-foreground">No published case studies yet.</p>
             </div>
           </section>
         )}
@@ -258,14 +184,9 @@ const CaseStudies = () => {
         <section className="section-sm">
           <div className="container-narrow text-center">
             <AnimatedSection>
-              <p className="text-muted-foreground">
-                Want to build software or a digital system that lasts?
-              </p>
-              <Link
-                to="/contact"
-                className="inline-block mt-4 text-primary font-medium"
-              >
-                Discuss a project →
+              <p className="text-muted-foreground">Want to build software or a digital system that lasts?</p>
+              <Link to="/contact" className="inline-block mt-4 text-primary font-medium">
+                Discuss a project {"->"}
               </Link>
             </AnimatedSection>
           </div>
@@ -276,4 +197,3 @@ const CaseStudies = () => {
 };
 
 export default CaseStudies;
-
