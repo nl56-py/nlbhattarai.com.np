@@ -44,7 +44,7 @@ const CaseStudies = () => {
   });
 
   const featuredStudy = caseStudies?.find((cs) => cs.featured);
-  const otherStudies = caseStudies?.filter((cs) => !cs.featured) || [];
+  const otherStudies = caseStudies?.filter((cs) => cs.id !== featuredStudy?.id) || [];
 
   return (
     <Layout>
